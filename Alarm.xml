@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<sensors>
+    <sensor name="Kuchnia"	readingType="1" />
+    <sensor name="Salon"	readingType="1" />
+    <sensor name="Gabinet"	readingType="1" />
+</sensors>

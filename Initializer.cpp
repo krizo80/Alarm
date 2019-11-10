@@ -30,8 +30,6 @@ void Initializer::init()
 
 void Initializer::begin()
 {
-	//devRegister.printDeviceList();
-
 	// starts all threads
 	thread schedulerThread(Scheduler(), 3);
 

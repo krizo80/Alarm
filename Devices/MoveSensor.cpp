@@ -10,7 +10,13 @@
 
 int MoveSensor::getDeviceReading()
 {
-	cout << "I'm moveSensor :" << endl;
+	cout << "MOVE SENSOR with address = " << deviceAddress << endl;
 	return 0;
+}
+
+
+ReadingType MoveSensor::getReadingType() const
+{
+	return readingType;
 }
 

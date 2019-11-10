@@ -20,33 +20,38 @@ void DevicesRegister::registerDevices()
 
 	for (auto &configElement : config->getDevicesConfiguration())
 	{
-		deviceRegister[configElement->getDeviceId()] = deviceType[configElement->getSensorParameters().readingType];
-	}
-
-	//only for debug purpose
-	for (auto el : deviceRegister)
-	{
-		cout << el.first << " " << el.second->getDeviceReading() << endl;
+		if (true == configElement->getSensorParameters().enabled)
+		{
+			deviceRegister[configElement->getDeviceId()] =
+					deviceType[configElement->getSensorParameters().readingType](configElement->getSensorParameters().sensorAddress);
+		}
 	}
 }
 
-/*
- * void DevicesRegister::printDeviceList()
+const vector<int> DevicesRegister::getRegistredDevicesId()
 {
-	for (auto it :devRegister)
+	vector<int> devicesId;
+
+	for (auto &deviceElement : deviceRegister)
 	{
-		it->getDeviceReading();
+		devicesId.push_back(deviceElement.first);
 	}
+
+	return devicesId;
 }
- */
 
-
-
-array<shared_ptr<Device>, 5> DevicesRegister::deviceType =
+const shared_ptr<Device> DevicesRegister::getRegisteredDevice(const int deviceId)
 {
-		[]()->shared_ptr<Device> { return make_shared<MoveSensor>(); }(),
-		[]()->shared_ptr<Device> { return make_shared<MoveSensor>(); }(),
-		[]()->shared_ptr<Device> { return make_shared<MoveSensor>(); }(),
-		[]()->shared_ptr<Device> { return make_shared<MoveSensor>(); }(),
-		[]()->shared_ptr<Device> { return make_shared<MoveSensor>(); }()
+	return deviceRegister[deviceId];
+}
+
+
+array<function<shared_ptr<Device>(int)>, 5> DevicesRegister::deviceType =
+{
+		[](int address)->shared_ptr<Device> { return make_shared<MoveSensor>(address); },
+		[](int address)->shared_ptr<Device> { return make_shared<TempSensor>(address); },
+		[](int address)->shared_ptr<Device> { return make_shared<MoveSensor>(address); },
+		[](int address)->shared_ptr<Device> { return make_shared<MoveSensor>(address); },
+		[](int address)->shared_ptr<Device> { return make_shared<MoveSensor>(address); }
 };
+

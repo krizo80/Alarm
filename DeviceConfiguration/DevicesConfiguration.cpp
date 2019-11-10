@@ -14,55 +14,71 @@ using namespace std;
 DevicesConfiguration::DevicesConfiguration(shared_ptr<Parser> parser)
 {
 	int deviceId = DeviceIDNotInitialized;
-	SensorParameters sensorParam = parser->getFirstSensorEntry();
 
-	configurationEntries.clear();
-	currentElementIndex = 0;
-
-	//read configuration file and prepare configuration structure
-	while (sensorParam.status != STATUS_XML_NO_MORE_SENSORS)
+	try
 	{
-		deviceId++;
-		configurationEntries.push_back(make_shared<ConfigurationEntry>(deviceId, sensorParam));
-		cout << sensorParam.sensorName << endl;
-		sensorParam = parser->getNextSensorEntry();
+		SensorParameters sensorParam = parser->getFirstSensorEntry();
+
+		configurationEntries.clear();
+		currentElementIndex = 0;
+
+		//read configuration file and prepare configuration structure
+		while (sensorParam.status != STATUS_XML_NO_MORE_SENSORS)
+		{
+			deviceId++;
+			configurationEntries.push_back(make_shared<ConfigurationEntry>(deviceId, sensorParam));
+			sensorParam = parser->getNextSensorEntry();
+		}
+	}
+	catch (exception &e)
+	{
+		throw;
 	}
 }
 
-list<shared_ptr<ConfigurationEntry>> DevicesConfiguration::getDevicesConfiguration() const
+vector<shared_ptr<ConfigurationEntry>> DevicesConfiguration::getDevicesConfiguration() const
 {
 	return configurationEntries;
 }
 
-ConfigurationEntry DevicesConfiguration::getConfigByDeviceId(const int deviceId) const
+shared_ptr<ConfigurationEntry> DevicesConfiguration::getConfigByDeviceId(const int deviceId) const
 {
+	shared_ptr<ConfigurationEntry> configEntry;
 
+	synch.lock();
 
+	try
+	{
+		configEntry = configurationEntries[deviceId];
+	}
+	catch (const std::out_of_range &e)
+	{
+		throw;
+	}
+
+	synch.unlock();
+
+	return configEntry;
 }
 
 DevicesConfiguration* DevicesConfiguration::getInstance()
 {
 	synch.lock();
 
-	if (configInstace == nullptr)
+	try
 	{
-		configInstace = new DevicesConfiguration(make_shared<XmlParser>("Alarm.xml"));
+		if (configInstace == nullptr)
+		{
+			configInstace = new DevicesConfiguration(make_shared<XmlParser>("Alarm.xml"));
+		}
+	}
+	catch(const exception &e)
+	{
+		std::cerr << e.what();
 	}
 
 	synch.unlock();
 	return configInstace;
-}
-
-
-ConfigurationEntry DevicesConfiguration::getFirstConfigElement()
-{
-	currentElementIndex = 0;
-	//configurationEntries.
-}
-
-ConfigurationEntry DevicesConfiguration::getNextConfigElement()
-{
-
 }
 
 

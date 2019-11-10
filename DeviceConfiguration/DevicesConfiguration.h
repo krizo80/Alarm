@@ -14,7 +14,7 @@
 #include "CommonDefs.h"
 #include <mutex>
 #include <thread>
-#include <list>
+#include <vector>
 #include <iostream>
 #include <iterator>
 
@@ -30,16 +30,14 @@ class DevicesConfiguration
 		static DevicesConfiguration *configInstace;
 		static mutex synch;
 
-		list<shared_ptr<ConfigurationEntry>> configurationEntries;
+		vector<shared_ptr<ConfigurationEntry>> configurationEntries;
 		int currentElementIndex;
 		//DevicesConfiguration(Parser &parser);
 		DevicesConfiguration(shared_ptr<Parser> parser);
 
 	public:
-		list<shared_ptr<ConfigurationEntry>> getDevicesConfiguration() const;
-		ConfigurationEntry getConfigByDeviceId(const int deviceId) const;
-		ConfigurationEntry getFirstConfigElement();
-		ConfigurationEntry getNextConfigElement();
+		vector<shared_ptr<ConfigurationEntry>> getDevicesConfiguration() const;
+		shared_ptr<ConfigurationEntry> getConfigByDeviceId(const int deviceId) const;
 		static DevicesConfiguration *getInstance();
 };
 

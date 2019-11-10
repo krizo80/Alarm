@@ -9,6 +9,7 @@
 #define DEVICE_H_
 
 #include <string>
+#include "CommonDefs.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ class Device
 
     public:
         virtual int getDeviceReading() = 0;
+        virtual ReadingType getReadingType() const = 0;
 };
 
 

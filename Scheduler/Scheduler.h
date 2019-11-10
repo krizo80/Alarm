@@ -19,6 +19,7 @@ class Scheduler
 
 	private:
 		int  schedulerThreadFunction();
+		const int scanningTimer = 100;
 		DevicesRegister devRegister;
 
 	public:

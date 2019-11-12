@@ -13,7 +13,6 @@
 #include <mutex>
 #include <thread>
 
-
 using namespace std;
 
 class Initializer

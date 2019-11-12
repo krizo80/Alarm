@@ -17,8 +17,9 @@ using namespace std;
 class TempSensor : public Device
 {
 	private:
-		const ReadingType readingType;
 		const int deviceAddress;
+		const ReadingType readingType;
+
 
     public:
 		TempSensor(int address) : deviceAddress(address), readingType(READING_STATE) {}

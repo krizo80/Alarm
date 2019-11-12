@@ -7,6 +7,7 @@
 
 
 #include "Scheduler.h"
+#include "DevicesConfiguration.h"
 
 Scheduler::Scheduler()
 {
@@ -37,6 +38,8 @@ int  Scheduler::schedulerThreadFunction()
 		tenthOfmilisec = (tenthOfmilisec % 10);
 		tenthOfmilisec++;
 	}
+
+	return STATUS_OK;
 }
 
 void Scheduler::operator ()(int x)

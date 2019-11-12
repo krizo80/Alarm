@@ -17,8 +17,9 @@ using namespace std;
 class MoveSensor : public Device
 {
 	private:
-		const ReadingType readingType;
 		const int deviceAddress;
+		const ReadingType readingType;
+
 
     public:
 		MoveSensor(int address) : deviceAddress(address), readingType(READING_FIXED_INT) {}

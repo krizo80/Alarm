@@ -4,9 +4,10 @@
  *  Created on: 20 paź 2019
  *      Author: dom
  */
-
-
 #include "DeviceRegister.h"
+#include "MoveSensor.h"
+#include "TempSensor.h"
+#include "DevicesConfiguration.h"
 
 DevicesRegister::DevicesRegister()
 {

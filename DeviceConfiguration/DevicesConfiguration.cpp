@@ -7,6 +7,7 @@
 
 
 #include "DevicesConfiguration.h"
+#include "XmlParser.h"
 
 using namespace std;
 

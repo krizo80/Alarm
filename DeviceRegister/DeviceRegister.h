@@ -1,8 +1,7 @@
 #include "Device.h"
-#include "MoveSensor.h"
-#include "TempSensor.h"
-#include "DevicesConfiguration.h"
+
 #include <map>
+#include <memory>
 #include <vector>
 #include <functional>
 
@@ -12,7 +11,6 @@ class DevicesRegister
 {
 	private:
 		map<int, shared_ptr<Device>> deviceRegister;
-		//static array<shared_ptr<Device>, 5> deviceType;
 		static array<function<shared_ptr<Device>(int)>, 5> deviceType;
 
 	public:

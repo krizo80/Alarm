@@ -10,8 +10,6 @@
 
 #include "ConfigurationEntry.h"
 #include "Parser.h"
-#include "XmlParser.h"
-#include "CommonDefs.h"
 #include <mutex>
 #include <thread>
 #include <vector>

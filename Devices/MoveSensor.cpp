@@ -8,15 +8,17 @@
 #include "MoveSensor.h"
 
 
-int MoveSensor::getDeviceReading()
+SensorReading MoveSensor::getDeviceReading()
 {
+	SensorReading reading;
+	static int a;
+
+	reading.readingType = this->readingType;
+	reading.lastReadingValue = a;
+	a++;
+	reading.status = STATUS_OK;
+
 	cout << "MOVE SENSOR with address = " << deviceAddress << endl;
-	return 0;
-}
-
-
-ReadingType MoveSensor::getReadingType() const
-{
-	return readingType;
+	return reading;
 }
 

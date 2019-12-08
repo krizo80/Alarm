@@ -7,16 +7,16 @@
 
 #include "TempSensor.h"
 
-int TempSensor::getDeviceReading()
+SensorReading TempSensor::getDeviceReading()
 {
+	SensorReading reading;
+
+	reading.readingType = this->readingType;
+	reading.lastReadingValue = 6;
+	reading.status = STATUS_OK;
+
 	cout << "TEMPERATURE SENSOR with address = " << deviceAddress << endl;
-	return 0;
-}
-
-
-ReadingType TempSensor::getReadingType() const
-{
-	return readingType;
+	return reading;
 }
 
 

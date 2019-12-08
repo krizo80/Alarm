@@ -24,7 +24,7 @@ void DevicesRegister::registerDevices()
 		if (true == configElement->getSensorParameters().enabled)
 		{
 			deviceRegister[configElement->getDeviceId()] =
-					deviceType[configElement->getSensorParameters().readingType](configElement->getSensorParameters().sensorAddress);
+					deviceType[configElement->getSensorParameters().sensorType](configElement->getSensorParameters().sensorAddress);
 		}
 	}
 }
@@ -47,7 +47,8 @@ const shared_ptr<Device> DevicesRegister::getRegisteredDevice(const int deviceId
 }
 
 
-array<function<shared_ptr<Device>(int)>, 5> DevicesRegister::deviceType =
+constexpr int DevicesRegister::deviceTypes;
+array<function<shared_ptr<Device>(int)>, DevicesRegister::deviceTypes> DevicesRegister::deviceType =
 {
 		[](int address)->shared_ptr<Device> { return make_shared<MoveSensor>(address); },
 		[](int address)->shared_ptr<Device> { return make_shared<TempSensor>(address); },

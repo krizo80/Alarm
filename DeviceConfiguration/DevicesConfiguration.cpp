@@ -8,6 +8,7 @@
 
 #include "DevicesConfiguration.h"
 #include "XmlParser.h"
+#include <any>
 
 using namespace std;
 
@@ -48,19 +49,23 @@ shared_ptr<ConfigurationEntry> DevicesConfiguration::getConfigByDeviceId(const i
 
 	synch.lock();
 
-	try
+	if (deviceId >= configurationEntries.size())
+	{
+		SensorParameters errorResult = {};
+		errorResult.status = STATUS_SENSOR_NOT_EXIST;
+		configEntry = make_shared<ConfigurationEntry>(deviceId,errorResult);
+	}
+	else
 	{
 		configEntry = configurationEntries[deviceId];
-	}
-	catch (const std::out_of_range &e)
-	{
-		throw;
 	}
 
 	synch.unlock();
 
 	return configEntry;
 }
+
+
 
 DevicesConfiguration* DevicesConfiguration::getInstance()
 {
@@ -83,7 +88,27 @@ DevicesConfiguration* DevicesConfiguration::getInstance()
 }
 
 
+DeviceInfoData DevicesConfiguration::getData(const int deviceId)
+{
+	DeviceInfoData config;
+
+	synch.lock();
+	config = this->getConfigByDeviceId(deviceId)->getSensorParameters();
+	synch.unlock();
+
+	return config;
+}
+
+//todo: change configuration settings
+Status DevicesConfiguration::setData(const int deviceId, DeviceInfoData data)
+{
+	Status status = STATUS_OK;
+	synch.lock();
+
+	synch.unlock();
+	return status;
+}
 
 DevicesConfiguration *DevicesConfiguration::configInstace = nullptr;
-mutex DevicesConfiguration::synch;
+recursive_mutex DevicesConfiguration::synch;
 

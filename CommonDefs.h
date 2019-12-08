@@ -9,12 +9,15 @@
 #define COMMONDEFS_H_
 
 #include <string>
+#include <any>
 
 using namespace std;
 
 typedef enum Status
 {
 	STATUS_OK,
+	STATUS_SENSOR_NOT_EXIST,
+	STATUS_READING_EXCEPTION,
 	STATUS_XML_PARSE_ERROR,
 	STATUS_XML_NO_MORE_SENSORS,
 	STATUS_MAX
@@ -29,15 +32,36 @@ typedef enum ReadingType
 	READING_MAX
 } ReadingType;
 
+typedef enum SensorType
+{
+	MOVE_SENSOR,
+	TEMP_SENSOR,
+	CO2_SENSOR,
+	CAMERA_SENSOR,
+	WATER_SENSOR,
+	SENSOR_MAX
+} SensorType;
+
 typedef struct SensorParameters
 {
 	string sensorName;
 	int scanningPeriod;
-	int readingType;
+	SensorType sensorType;
 	int sensorAddress;
 	bool enabled;
 	Status status;
 } SensorParameters;
+
+
+typedef struct SensorReading
+{
+	int lastReadingValue;
+	ReadingType readingType;
+	Status status;
+} SensorReading;
+
+
+typedef any DeviceInfoData;
 
 
 #endif /* COMMONDEFS_H_ */

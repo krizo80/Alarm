@@ -8,18 +8,17 @@
 
 #include "Scheduler.h"
 #include "DevicesConfiguration.h"
+#include "SensorEventsDatabase.h"
 
-Scheduler::Scheduler()
-{
 
-}
 
 int  Scheduler::schedulerThreadFunction()
 {
 	int tenthOfmilisec = 0;
-	DevicesConfiguration *config = DevicesConfiguration::getInstance();
+	DevicesRegister devRegister;
+	DeviceInfo *deviceConfiguration = DevicesConfiguration::getInstance();
 	vector<int> devicesId;
-
+	int scanningPeriod = 0;
 
 	devRegister.registerDevices();
 	devicesId = devRegister.getRegistredDevicesId();
@@ -27,11 +26,24 @@ int  Scheduler::schedulerThreadFunction()
 	//start to read sensors
 	while(1)
 	{
+
 		for (auto &deviceId : devicesId)
 		{
-			if (0 == (tenthOfmilisec % config->getConfigByDeviceId(deviceId)->getSensorParameters().scanningPeriod))
+			try
 			{
-				devRegister.getRegisteredDevice(deviceId)->getDeviceReading();
+				scanningPeriod = any_cast<SensorParameters>(deviceConfiguration->getData(deviceId)).scanningPeriod;
+			}
+			catch(bad_any_cast &e)
+			{
+				//todo:wrong reading - log it
+			}
+
+			if (0 == (tenthOfmilisec % scanningPeriod))
+			{
+				///todo:handle the status (may return value different then success)
+				//feed all connected sources
+				for (auto &source : readingSources)
+					source->setData(deviceId,devRegister.getRegisteredDevice(deviceId)->getDeviceReading());
 			}
 		}
 		this_thread::sleep_for(chrono::milliseconds(scanningTimer));

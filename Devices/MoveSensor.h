@@ -23,8 +23,7 @@ class MoveSensor : public Device
 
     public:
 		MoveSensor(int address) : deviceAddress(address), readingType(READING_FIXED_INT) {}
-        int getDeviceReading() override;
-        ReadingType getReadingType() const override;
+		SensorReading getDeviceReading() override;
 };
 
 

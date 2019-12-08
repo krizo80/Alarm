@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 
 <sensors>
-    <sensor name="Kuchnia" readingType="0" scanningPeriod="1" address="44" enabled="1"/>
-    <sensor name="Salon" readingType="0" scanningPeriod="1" address="744" enabled="1"/>
-    <sensor name="Gabinet" readingType="0" scanningPeriod="1" address="64" enabled="1"/>
-    <sensor name="Termometr Salon" readingType="1" scanningPeriod="10" address="4" enabled="1"/>
+    <sensor name="Kuchnia" sensorType="0" scanningPeriod="1" address="44" enabled="1"/>
+    <sensor name="Salon" sensorType="0" scanningPeriod="1" address="744" enabled="1"/>
+    <sensor name="Gabinet" sensorType="0" scanningPeriod="1" address="64" enabled="1"/>
+    <sensor name="Termometr Salon" sensorType="1" scanningPeriod="10" address="4" enabled="1"/>
 </sensors>

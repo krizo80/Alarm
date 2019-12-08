@@ -17,8 +17,7 @@ class Device
 {
 
     public:
-        virtual int getDeviceReading() = 0;
-        virtual ReadingType getReadingType() const = 0;
+        virtual SensorReading getDeviceReading() = 0;
 };
 
 

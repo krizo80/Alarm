@@ -14,3 +14,4 @@ ConfigurationEntry::ConfigurationEntry(int deviceId, SensorParameters parameters
 	this->deviceId = deviceId;
 	this->parameters = parameters;
 }
+

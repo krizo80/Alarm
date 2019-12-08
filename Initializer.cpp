@@ -25,6 +25,7 @@ Initializer * Initializer::getInstance()
 
 void Initializer::init()
 {
+	//todo:read input parameters ./alarm port=80 configile="Alarm.xml"
 	// parse input parameters (Alarm httpPort=80 configFile=Alarm.xml)
 }
 

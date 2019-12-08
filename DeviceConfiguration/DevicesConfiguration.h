@@ -10,23 +10,26 @@
 
 #include "ConfigurationEntry.h"
 #include "Parser.h"
+#include "DeviceInfo.h"
 #include <mutex>
 #include <thread>
 #include <vector>
 #include <iostream>
 #include <iterator>
+#include <memory>
 
 
 
 using namespace std;
 
 
-class DevicesConfiguration
+class DevicesConfiguration: public DeviceInfo
 {
 	private:
 		static constexpr int DeviceIDNotInitialized = -1;
 		static DevicesConfiguration *configInstace;
-		static mutex synch;
+		static recursive_mutex synch;
+
 
 		vector<shared_ptr<ConfigurationEntry>> configurationEntries;
 		int currentElementIndex;
@@ -37,6 +40,8 @@ class DevicesConfiguration
 		vector<shared_ptr<ConfigurationEntry>> getDevicesConfiguration() const;
 		shared_ptr<ConfigurationEntry> getConfigByDeviceId(const int deviceId) const;
 		static DevicesConfiguration *getInstance();
+		DeviceInfoData getData(const int deviceId) override;
+		Status setData(const int deviceId, DeviceInfoData data) override;
 };
 
 

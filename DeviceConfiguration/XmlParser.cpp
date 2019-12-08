@@ -24,7 +24,7 @@ SensorParameters XmlParser::readSensorParameters()
 		try
 		{
 			sensorData.sensorName = sensorsNode->first_attribute("name")->value();
-			sensorData.readingType = stoi(sensorsNode->first_attribute("readingType")->value());
+			sensorData.sensorType = static_cast<SensorType>(stoi(sensorsNode->first_attribute("sensorType")->value()));
 			sensorData.scanningPeriod = stoi(sensorsNode->first_attribute("scanningPeriod")->value());
 			sensorData.sensorAddress = stoi(sensorsNode->first_attribute("address")->value());
 			sensorData.enabled = static_cast<bool>(stoi(sensorsNode->first_attribute("scanningPeriod")->value()));
@@ -32,6 +32,7 @@ SensorParameters XmlParser::readSensorParameters()
 		}
 		catch (invalid_argument& e)
 		{
+			//todo: logg it - wrong configuration
 			sensorData.status = STATUS_XML_PARSE_ERROR;
 		}
 	}

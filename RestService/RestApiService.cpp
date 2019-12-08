@@ -11,6 +11,7 @@
 #include "CommonDefs.h"
 #include "Device.h"
 
+
 using namespace std;
 
 void RestApiService::onRequest(const Pistache::Http::Request& request, Pistache::Http::ResponseWriter response)
@@ -22,7 +23,14 @@ void RestApiService::onRequest(const Pistache::Http::Request& request, Pistache:
 	cmd = this->getCommand(request.resource());
 	apiParameters = this->getParameters(request.resource());
 
-	apiResponse = apiCommands[cmd](apiParameters);
+	if (apiCommands.find(cmd) != apiCommands.end())
+	{
+		apiResponse = apiCommands[cmd](apiParameters);
+	}
+	else
+	{
+		apiResponse = generateErrorResponse("-1","Invalid command");
+	}
 	response.send(Pistache::Http::Code::Ok, apiResponse);
 }
 
@@ -44,6 +52,7 @@ string RestApiService::getCommand(const string inputQuery)
 	{
 		command = inputQuery.substr(cmdStringBegin, paramSeparatorIdx - cmdStringBegin);
 	}
+
 	return command;
 }
 
@@ -82,24 +91,80 @@ map<string,string> RestApiService::getParameters(const string inputQuery)
 	return apiParams;
 }
 
-string RestApiService::GetVersion(map<string,string> parameters)
+string RestApiService::generateResponse(string sensorId, map<string,string> responseElements)
+{
+	string response;
+
+	//prepare response
+	response = "<sensosId>" + sensorId + "</sensorId>";
+
+	for (auto &element : responseElements)
+	{
+		response += "<" + element.first +">" + element.second + "</" + element.first +">";
+	}
+
+	return response;
+}
+
+string RestApiService::generateErrorResponse(string sensorId, string message)
+{
+	string response;
+
+	//prepare response
+	response = "<sensosId>" + sensorId + "</sensorId>";
+	response += "<error>" +message + "</error>";
+	return response;
+}
+
+string RestApiService::getVersion(map<string,string> parameters)
 {
 	return "<version>1.0</version>";
 }
 
-string RestApiService::GetReading(map<string,string> parameters)
+string RestApiService::getReading(map<string,string> parameters)
 {
-	string sensorId;
+	int sensorId;
+	string response;
 
-	sensorId = parameters["id"];
+	try
+	{
+		sensorId = stoi(parameters["id"]);
+		response = generateResponse(parameters["id"], deviceRegister.getReadingDeviceInfo(sensorId));
+	}
+	catch (invalid_argument& e)
+	{
+		response = generateErrorResponse(parameters["id"], "Invalid parameter");
+	}
 
-	return "<sensorId>"+sensorId+"</sensorId>";
+	return response;
+}
+
+string RestApiService::getConfig(map<string,string> parameters)
+{
+	int sensorId;
+	string response;
+
+	try
+	{
+		sensorId = stoi(parameters["id"]);
+		response = generateResponse(parameters["id"], deviceRegister.getConfigurationDeviceInfo(sensorId));
+	}
+	catch (invalid_argument& e)
+	{
+		response = generateErrorResponse(parameters["id"], "Invalid parameter");
+	}
+
+	return response;
 }
 
 
 map<string,function<string(map<string,string>)>> RestApiService::apiCommands =
 {
-		{"GetVersion", GetVersion},
-		{"GetReading", GetReading}
+		{"GetVersion", getVersion},
+		{"GetReading", getReading},
+		{"GetConfig" , getConfig }
 
 };
+
+DeviceInfoRegister RestApiService::deviceRegister;
+

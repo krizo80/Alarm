@@ -23,8 +23,7 @@ class TempSensor : public Device
 
     public:
 		TempSensor(int address) : deviceAddress(address), readingType(READING_STATE) {}
-        int getDeviceReading() override;
-        ReadingType getReadingType() const override;
+		SensorReading getDeviceReading() override;
 };
 
 

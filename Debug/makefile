@@ -15,6 +15,7 @@ RM := rm -rf
 -include DeviceInfo/subdir.mk
 -include DeviceEvents/subdir.mk
 -include DeviceConfiguration/subdir.mk
+-include AlarmService/subdir.mk
 -include subdir.mk
 -include objects.mk
 

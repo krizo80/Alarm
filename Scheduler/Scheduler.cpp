@@ -11,7 +11,6 @@
 #include "SensorEventsDatabase.h"
 
 
-
 int  Scheduler::schedulerThreadFunction()
 {
 	int tenthOfmilisec = 0;

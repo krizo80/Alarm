@@ -48,6 +48,7 @@ typedef struct SensorParameters
 	int scanningPeriod;
 	SensorType sensorType;
 	int sensorAddress;
+	int enableThresholdValue;
 	bool enabled;
 	Status status;
 } SensorParameters;

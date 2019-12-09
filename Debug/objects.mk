@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -lpthread -lpistache
+LIBS := -lpistache -lpthread
 

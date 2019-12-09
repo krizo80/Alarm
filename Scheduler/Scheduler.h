@@ -14,23 +14,29 @@
 #include "DeviceRegister.h"
 #include "DeviceInfo.h"
 #include "CommonDefs.h"
-//todo: only relative path
-#include "../DeviceEvents/SensorEventsDatabase.h"
 #include "array"
+//todo: only relative path
+#include "SensorEventsDatabase.h"
+#include "AlarmService.h"
+
+
 
 using namespace std;
 
 class Scheduler
 {
-
 	private:
-		array<shared_ptr<DeviceInfo>,1> readingSources;
+		static constexpr int maxSources = 2;
+		array<shared_ptr<DeviceInfo>,maxSources> readingSources;
 		int  schedulerThreadFunction();
 		const int scanningTimer = 100;
 
 	public:
 		Scheduler() : readingSources(
-				{make_shared<SensorEventsDatabase>()}
+				{
+					make_shared<SensorEventsDatabase>(),
+					make_shared<AlarmService>()
+				}
 		){}
 
 		void operator()(int x);

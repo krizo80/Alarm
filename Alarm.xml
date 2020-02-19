@@ -1,8 +1,13 @@
 <?xml version="1.0" ?>
 
+<settings>
+	<setting name="code" value="123456"/>	
+</settings>
+	
 <sensors>
-    <sensor name="Kuchnia" sensorType="0" scanningPeriod="1" address="44" enabled="1"/>
-    <sensor name="Salon" sensorType="0" scanningPeriod="1" address="744" enabled="1"/>
-    <sensor name="Gabinet" sensorType="0" scanningPeriod="1" address="64" enabled="1"/>
-    <sensor name="Termometr Salon" sensorType="1" scanningPeriod="10" address="4" enabled="1"/>
+    <sensor name="Kuchnia" sensorType="0" threshold="1" scanningPeriod="1" address="44" enabled="1"/>
+    <sensor name="Salon" sensorType="0" threshold="1" scanningPeriod="1" address="744" enabled="1"/>
+    <sensor name="Gabinet" sensorType="0" threshold="1" scanningPeriod="1" address="64" enabled="1"/>
+    <sensor name="Termometr Salon" sensorType="1" threshold="30" scanningPeriod="10" address="4" enabled="1"/>
+    <sensor name="Sygnal Alarmowy" sensorType="4" threshold="30" scanningPeriod="10" address="4" enabled="1"/>
 </sensors>

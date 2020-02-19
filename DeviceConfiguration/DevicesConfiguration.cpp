@@ -22,25 +22,31 @@ DevicesConfiguration::DevicesConfiguration(shared_ptr<Parser> parser)
 		SensorParameters sensorParam = parser->getFirstSensorEntry();
 
 		configurationEntries.clear();
-		currentElementIndex = 0;
 
-		//read configuration file and prepare configuration structure
+		//read configuration file and prepare sensors structure
 		while (sensorParam.status != STATUS_XML_NO_MORE_SENSORS)
 		{
 			deviceId++;
 			configurationEntries.push_back(make_shared<ConfigurationEntry>(deviceId, sensorParam));
 			sensorParam = parser->getNextSensorEntry();
 		}
+
+		SettingParameters settingParam = parser->getFirstSettingEntry();
+		settingEntries.clear();
+
+		//read configuration file and prepare settings structure
+		while (settingParam.status != STATUS_XML_NO_MORE_SETTINGS)
+		{
+			settingEntries.push_back(settingParam);
+			settingParam = parser->getNextSettingEntry();
+		}
+
 	}
 	catch (exception &e)
 	{
+		//todo: make clean - remove throw
 		throw;
 	}
-}
-
-vector<shared_ptr<ConfigurationEntry>> DevicesConfiguration::getDevicesConfiguration() const
-{
-	return configurationEntries;
 }
 
 shared_ptr<ConfigurationEntry> DevicesConfiguration::getConfigByDeviceId(const int deviceId) const
@@ -49,7 +55,7 @@ shared_ptr<ConfigurationEntry> DevicesConfiguration::getConfigByDeviceId(const i
 
 	synch.lock();
 
-	if (deviceId >= configurationEntries.size())
+	if (deviceId >= static_cast<int>(configurationEntries.size()))
 	{
 		SensorParameters errorResult = {};
 		errorResult.status = STATUS_SENSOR_NOT_EXIST;
@@ -67,7 +73,7 @@ shared_ptr<ConfigurationEntry> DevicesConfiguration::getConfigByDeviceId(const i
 
 
 
-DevicesConfiguration* DevicesConfiguration::getInstance()
+shared_ptr<DevicesConfiguration> DevicesConfiguration::getInstance()
 {
 	synch.lock();
 
@@ -75,11 +81,12 @@ DevicesConfiguration* DevicesConfiguration::getInstance()
 	{
 		if (configInstace == nullptr)
 		{
-			configInstace = new DevicesConfiguration(make_shared<XmlParser>("Alarm.xml"));
+			configInstace = static_cast<shared_ptr<DevicesConfiguration>  >(new DevicesConfiguration(make_shared<XmlParser>("Alarm.xml")));
 		}
 	}
 	catch(const exception &e)
 	{
+		//todo: report exception
 		std::cerr << e.what();
 	}
 
@@ -109,6 +116,25 @@ Status DevicesConfiguration::setData(const int deviceId, DeviceInfoData data)
 	return status;
 }
 
-DevicesConfiguration *DevicesConfiguration::configInstace = nullptr;
+SettingParameters DevicesConfiguration::getSettingValue(string name)
+{
+	SettingParameters retValue;
+
+	synch.lock();
+
+	retValue.status = STATUS_SETTING_NOT_EXIST;
+	for (auto setting: settingEntries)
+	{
+		if (setting.settingName == name)
+			retValue = setting;
+	}
+
+	synch.unlock();
+
+	return retValue;
+
+}
+
+shared_ptr<DevicesConfiguration> DevicesConfiguration::configInstace = nullptr;
 recursive_mutex DevicesConfiguration::synch;
 

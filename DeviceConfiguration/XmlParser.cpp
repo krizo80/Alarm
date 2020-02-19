@@ -14,6 +14,7 @@ XmlParser::XmlParser(string fileName)
 	rapidxml::file<> xmlFile(fileName.c_str());
 	this->xmlDocument.parse<rapidxml::parse_full>(xmlFile.data());
 	sensorsNode = xmlDocument.first_node("sensors");
+	settingsNode = xmlDocument.first_node("settings");
 }
 
 SensorParameters XmlParser::readSensorParameters()
@@ -28,6 +29,7 @@ SensorParameters XmlParser::readSensorParameters()
 			sensorData.scanningPeriod = stoi(sensorsNode->first_attribute("scanningPeriod")->value());
 			sensorData.sensorAddress = stoi(sensorsNode->first_attribute("address")->value());
 			sensorData.enabled = static_cast<bool>(stoi(sensorsNode->first_attribute("scanningPeriod")->value()));
+			sensorData.enableThresholdValue = stoi(sensorsNode->first_attribute("threshold")->value());
 			sensorData.status = STATUS_OK;
 		}
 		catch (invalid_argument& e)
@@ -44,6 +46,31 @@ SensorParameters XmlParser::readSensorParameters()
 	return sensorData;
 }
 
+SettingParameters XmlParser::readSettingParameters()
+{
+	SettingParameters settingData;
+	if (settingsNode != nullptr)
+	{
+		try
+		{
+			settingData.settingName = settingsNode->first_attribute("name")->value();
+			settingData.value = settingsNode->first_attribute("value")->value();
+			settingData.status = STATUS_OK;
+		}
+		catch (invalid_argument& e)
+		{
+			//todo: logg it - wrong configuration
+			settingData.status = STATUS_XML_PARSE_ERROR;
+		}
+	}
+	else
+	{
+		settingData.status = STATUS_XML_NO_MORE_SETTINGS;
+	}
+
+	return settingData;
+}
+
 SensorParameters XmlParser::getFirstSensorEntry()
 {
 	sensorsNode = xmlDocument.first_node("sensors");
@@ -55,4 +82,18 @@ SensorParameters XmlParser::getNextSensorEntry()
 {
 	sensorsNode = sensorsNode->next_sibling("sensor");
 	return readSensorParameters();
+}
+
+
+SettingParameters XmlParser::getFirstSettingEntry()
+{
+	settingsNode = xmlDocument.first_node("settings");
+	settingsNode = settingsNode->first_node("setting");
+	return readSettingParameters();
+}
+
+SettingParameters XmlParser::getNextSettingEntry()
+{
+	settingsNode = settingsNode->next_sibling("setting");
+	return readSettingParameters();
 }

@@ -19,29 +19,33 @@
 #include <memory>
 
 
+#include "ConfigSettingAbstract.h"
 
 using namespace std;
 
 
-class DevicesConfiguration: public DeviceInfo
+class DevicesConfiguration: public DeviceInfo, public ConfigSettingAbstract
 {
 	private:
 		static constexpr int DeviceIDNotInitialized = -1;
-		static DevicesConfiguration *configInstace;
+		static shared_ptr<DevicesConfiguration> configInstace;
 		static recursive_mutex synch;
 
-
 		vector<shared_ptr<ConfigurationEntry>> configurationEntries;
-		int currentElementIndex;
-		//DevicesConfiguration(Parser &parser);
+		vector<SettingParameters> settingEntries;
+
 		DevicesConfiguration(shared_ptr<Parser> parser);
+		shared_ptr<ConfigurationEntry> getConfigByDeviceId(const int deviceId) const;
 
 	public:
-		vector<shared_ptr<ConfigurationEntry>> getDevicesConfiguration() const;
-		shared_ptr<ConfigurationEntry> getConfigByDeviceId(const int deviceId) const;
-		static DevicesConfiguration *getInstance();
+		static shared_ptr<DevicesConfiguration> getInstance();
+
 		DeviceInfoData getData(const int deviceId) override;
 		Status setData(const int deviceId, DeviceInfoData data) override;
+
+		SettingParameters getSettingValue(string name) override;
+
+		virtual ~DevicesConfiguration() {}
 };
 
 

@@ -7,6 +7,7 @@
 #include "DeviceRegister.h"
 #include "MoveSensor.h"
 #include "TempSensor.h"
+#include "AlarmSensor.h"
 #include "DevicesConfiguration.h"
 
 DevicesRegister::DevicesRegister()
@@ -17,15 +18,26 @@ DevicesRegister::DevicesRegister()
 
 void DevicesRegister::registerDevices()
 {
-	DevicesConfiguration *config = DevicesConfiguration::getInstance();
+	shared_ptr<DeviceInfo> config = DevicesConfiguration::getInstance();
+	SensorParameters sensorConfiguration;
+	int deviceId = 0;
 
-	for (auto &configElement : config->getDevicesConfiguration())
+	try
 	{
-		if (true == configElement->getSensorParameters().enabled)
+		do
 		{
-			deviceRegister[configElement->getDeviceId()] =
-					deviceType[configElement->getSensorParameters().sensorType](configElement->getSensorParameters().sensorAddress);
+			sensorConfiguration = any_cast<SensorParameters>(config->getData(deviceId));
+			if (true == sensorConfiguration.enabled)
+			{
+				deviceRegister[deviceId] = deviceType[sensorConfiguration.sensorType](sensorConfiguration.sensorAddress);
+			}
+			deviceId++;
 		}
+		while (sensorConfiguration.status == STATUS_OK);
+	}
+	catch (bad_any_cast &e)
+	{
+		//todo: log critical event
 	}
 }
 
@@ -43,6 +55,7 @@ const vector<int> DevicesRegister::getRegistredDevicesId()
 
 const shared_ptr<Device> DevicesRegister::getRegisteredDevice(const int deviceId)
 {
+	//todo: checki if it can throw exception if index is out of the range - catch it in scheduler
 	return deviceRegister[deviceId];
 }
 
@@ -54,6 +67,6 @@ array<function<shared_ptr<Device>(int)>, DevicesRegister::deviceTypes> DevicesRe
 		[](int address)->shared_ptr<Device> { return make_shared<TempSensor>(address); },
 		[](int address)->shared_ptr<Device> { return make_shared<MoveSensor>(address); },
 		[](int address)->shared_ptr<Device> { return make_shared<MoveSensor>(address); },
-		[](int address)->shared_ptr<Device> { return make_shared<MoveSensor>(address); }
+		[](int address)->shared_ptr<Device> { return make_shared<AlarmSensor>(address); }
 };
 

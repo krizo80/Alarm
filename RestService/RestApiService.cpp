@@ -9,6 +9,8 @@
 
 #include "RestApiService.h"
 #include "CommonDefs.h"
+#include "DeviceServiceAbstract.h"
+#include "AlarmService.h"
 #include "Device.h"
 
 
@@ -157,13 +159,38 @@ string RestApiService::getConfig(map<string,string> parameters)
 	return response;
 }
 
+string RestApiService::enableAlarm(map<string,string> parameters)
+{
+	shared_ptr<DeviceServiceAbstract> alarmService = AlarmService::getInstance();
+
+	alarmService->enableService();
+
+	return "<enabled>1</enabled>";
+}
+
+string RestApiService::disableAlarm(map<string,string> parameters)
+{
+	shared_ptr<DeviceServiceAbstract> alarmService = AlarmService::getInstance();
+	string code = parameters["code"];
+	Status status = STATUS_OK;
+	string response = "<enabled>0</enabled>";
+
+	status = alarmService->disableService(code);
+	if (status != STATUS_OK)
+	{
+		response = "<enabled>1</enabled>";
+	}
+
+	return response;
+}
 
 map<string,function<string(map<string,string>)>> RestApiService::apiCommands =
 {
 		{"GetVersion", getVersion},
 		{"GetReading", getReading},
-		{"GetConfig" , getConfig }
-
+		{"GetConfig" , getConfig },
+		{"EnableAlarm" , enableAlarm },
+		{"DisableAlarm" , disableAlarm }
 };
 
 DeviceInfoRegister RestApiService::deviceRegister;

@@ -20,7 +20,7 @@ using namespace std;
 class DeviceInfoRegister
 {
 	private:
-		vector<DeviceInfo *> deviceInfoSource;
+		vector<shared_ptr<DeviceInfo>> deviceInfoSource;
 
 	public:
 		DeviceInfoRegister();

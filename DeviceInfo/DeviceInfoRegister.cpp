@@ -17,7 +17,7 @@ DeviceInfoRegister::DeviceInfoRegister()
 {
 	deviceInfoSource.push_back(DevicesConfiguration::getInstance());
 	//todo: provide destructor
-	deviceInfoSource.push_back(new SensorEventsDatabase());
+	deviceInfoSource.push_back(make_shared<SensorEventsDatabase>());
 }
 
 map<string,string> DeviceInfoRegister::getConfigurationDeviceInfo(int deviceId)

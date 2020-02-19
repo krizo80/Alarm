@@ -12,7 +12,7 @@
 #include <iostream>
 #include <memory>
 #include "DeviceRegister.h"
-#include "DeviceInfo.h"
+#include "DeviceServiceAbstract.h"
 #include "CommonDefs.h"
 #include "array"
 //todo: only relative path
@@ -27,7 +27,7 @@ class Scheduler
 {
 	private:
 		static constexpr int maxSources = 2;
-		array<shared_ptr<DeviceInfo>,maxSources> readingSources;
+		array<shared_ptr<DeviceServiceAbstract>,maxSources> readingSources;
 		int  schedulerThreadFunction();
 		const int scanningTimer = 100;
 
@@ -35,7 +35,7 @@ class Scheduler
 		Scheduler() : readingSources(
 				{
 					make_shared<SensorEventsDatabase>(),
-					make_shared<AlarmService>()
+					AlarmService::getInstance()
 				}
 		){}
 

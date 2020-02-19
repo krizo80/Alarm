@@ -24,6 +24,8 @@ class TempSensor : public Device
     public:
 		TempSensor(int address) : deviceAddress(address), readingType(READING_STATE) {}
 		SensorReading getDeviceReading() override;
+
+		virtual ~TempSensor() {}
 };
 
 

@@ -5,7 +5,7 @@
  *      Author: dom
  */
 
-
+#include <memory>
 #include "Scheduler.h"
 #include "DevicesConfiguration.h"
 #include "SensorEventsDatabase.h"
@@ -15,12 +15,19 @@ int  Scheduler::schedulerThreadFunction()
 {
 	int tenthOfmilisec = 0;
 	DevicesRegister devRegister;
-	DeviceInfo *deviceConfiguration = DevicesConfiguration::getInstance();
+	shared_ptr<DeviceInfo> deviceConfiguration = DevicesConfiguration::getInstance();
 	vector<int> devicesId;
 	int scanningPeriod = 0;
 
 	devRegister.registerDevices();
 	devicesId = devRegister.getRegistredDevicesId();
+
+	// setup consumers of readings
+	for (auto &deviceId : devicesId)
+		for (auto &source : readingSources)
+		{
+			source->prepareDeviceInfoSetup(deviceId, devRegister.getRegisteredDevice(deviceId));
+		}
 
 	//start to read sensors
 	while(1)

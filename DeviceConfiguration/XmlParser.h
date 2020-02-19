@@ -17,13 +17,18 @@ class XmlParser: public Parser
 	private:
 		rapidxml::xml_document<> xmlDocument;
 		rapidxml::xml_node<> *sensorsNode;
+		rapidxml::xml_node<> *settingsNode;
 		SensorParameters readSensorParameters();
+		SettingParameters readSettingParameters();
 
 	public:
 		XmlParser(string fileName);
 		SensorParameters getFirstSensorEntry() override;
 		SensorParameters getNextSensorEntry() override;
+		SettingParameters getFirstSettingEntry() override;
+		SettingParameters getNextSettingEntry() override;
 
+		virtual ~XmlParser() {}
 };
 
 

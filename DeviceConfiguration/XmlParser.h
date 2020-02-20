@@ -8,11 +8,11 @@
 #ifndef DEVICECONFIGURATION_XMLPARSER_H_
 #define DEVICECONFIGURATION_XMLPARSER_H_
 
-#include "Parser.h"
+#include <ParserInterface.h>
 #include <rapidxml.hpp>
 #include "rapidxml_utils.hpp"
 
-class XmlParser: public Parser
+class XmlParser: public ParserInterface
 {
 	private:
 		rapidxml::xml_document<> xmlDocument;

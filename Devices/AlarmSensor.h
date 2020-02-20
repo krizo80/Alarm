@@ -9,14 +9,14 @@
 #define DEVICES_ALARMSENSOR_H_
 
 
-#include "Device.h"
+#include <DeviceInterface.h>
 #include "CommonDefs.h"
 #include "AlarmTriggerInterface.h"
 #include <iostream>
 
 using namespace std;
 
-class AlarmSensor : public Device, public AlarmTriggerInterface
+class AlarmSensor : public DeviceInterface, public AlarmTriggerInterface
 {
 	private:
 		const int deviceAddress;

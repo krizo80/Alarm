@@ -8,7 +8,7 @@
 #ifndef DEVICEEVENTS_SENSOREVENTSDATABASE_H_
 #define DEVICEEVENTS_SENSOREVENTSDATABASE_H_
 
-#include "DeviceServiceAbstract.h"
+#include <DeviceService.h>
 #include <map>
 #include <any>
 
@@ -21,7 +21,7 @@ class SensorEventsDatabase : public DeviceServiceAbstract
 		DeviceInfoData getData(const int deviceId) override;
 		Status setData(const int deviceId, DeviceInfoData data) override;
 
-		void prepareDeviceInfoSetup(const int deviceId, const shared_ptr<Device> device) override{};
+		void prepareDeviceInfoSetup(const int deviceId, const shared_ptr<DeviceInterface> device) override{};
 		Status enableService() override{ return STATUS_OK; };
 		Status disableService(string code) override{ return STATUS_OK; };
 

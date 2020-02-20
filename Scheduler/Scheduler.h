@@ -9,10 +9,10 @@
 #define SCHEDULER_H_
 
 
+#include <DeviceRegister.h>
+#include <DeviceService.h>
 #include <iostream>
 #include <memory>
-#include "DeviceRegister.h"
-#include "DeviceServiceAbstract.h"
 #include "CommonDefs.h"
 #include "array"
 //todo: only relative path

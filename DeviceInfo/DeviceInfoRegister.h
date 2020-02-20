@@ -8,19 +8,19 @@
 #ifndef DEVICEINFO_DEVICEINFOREGISTER_H_
 #define DEVICEINFO_DEVICEINFOREGISTER_H_
 
+#include <DeviceInfoInterface.h>
 #include <vector>
 #include <map>
 #include <memory>
 #include <array>
 #include <functional>
-#include "DeviceInfo.h"
 
 using namespace std;
 
 class DeviceInfoRegister
 {
 	private:
-		vector<shared_ptr<DeviceInfo>> deviceInfoSource;
+		vector<shared_ptr<DeviceInfoInterface>> deviceInfoSource;
 
 	public:
 		DeviceInfoRegister();

@@ -5,19 +5,19 @@
  *      Author: dom
  */
 
-#ifndef DEVICECONFIGURATION_CONFIGSETTINGABSTRACT_H_
-#define DEVICECONFIGURATION_CONFIGSETTINGABSTRACT_H_
+#ifndef DEVICECONFIGURATION_CONFIGSETTINGINTERFACE_H_
+#define DEVICECONFIGURATION_CONFIGSETTINGINTERFACE_H_
 
 
 #include "CommonDefs.h"
 
 using namespace std;
 
-class ConfigSettingAbstract
+class ConfigSettingInterface
 {
 	public:
 		virtual SettingParameters getSettingValue(string name) = 0;
 };
 
 
-#endif /* DEVICECONFIGURATION_CONFIGSETTINGABSTRACT_H_ */
+#endif /* DEVICECONFIGURATION_CONFIGSETTINGINTERFACE_H_ */

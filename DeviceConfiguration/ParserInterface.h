@@ -5,15 +5,15 @@
  *      Author: dom
  */
 
-#ifndef DEVICECONFIGURATION_PARSER_H_
-#define DEVICECONFIGURATION_PARSER_H_
+#ifndef DEVICECONFIGURATION_PARSERINTERFACE_H_
+#define DEVICECONFIGURATION_PARSERINTERFACE_H_
 
 #include "ConfigurationEntry.h"
 #include "CommonDefs.h"
 
 using namespace std;
 
-class Parser
+class ParserInterface
 {
 	public:
 		virtual SensorParameters getFirstSensorEntry() = 0;
@@ -23,4 +23,4 @@ class Parser
 };
 
 
-#endif /* DEVICECONFIGURATION_PARSER_H_ */
+#endif /* DEVICECONFIGURATION_PARSERINTERFACE_H_ */

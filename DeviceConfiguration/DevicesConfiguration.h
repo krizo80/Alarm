@@ -8,9 +8,10 @@
 #ifndef DEVICECONFIGURATION_DEVICESCONFIGURATION_H_
 #define DEVICECONFIGURATION_DEVICESCONFIGURATION_H_
 
+#include <ConfigSettingInterface.h>
+#include <DeviceInfoInterface.h>
+#include <ParserInterface.h>
 #include "ConfigurationEntry.h"
-#include "Parser.h"
-#include "DeviceInfo.h"
 #include <mutex>
 #include <thread>
 #include <vector>
@@ -19,12 +20,11 @@
 #include <memory>
 
 
-#include "ConfigSettingAbstract.h"
 
 using namespace std;
 
 
-class DevicesConfiguration: public DeviceInfo, public ConfigSettingAbstract
+class DevicesConfiguration: public DeviceInfoInterface, public ConfigSettingInterface
 {
 	private:
 		static constexpr int DeviceIDNotInitialized = -1;
@@ -34,7 +34,7 @@ class DevicesConfiguration: public DeviceInfo, public ConfigSettingAbstract
 		vector<shared_ptr<ConfigurationEntry>> configurationEntries;
 		vector<SettingParameters> settingEntries;
 
-		DevicesConfiguration(shared_ptr<Parser> parser);
+		DevicesConfiguration(shared_ptr<ParserInterface> parser);
 		shared_ptr<ConfigurationEntry> getConfigByDeviceId(const int deviceId) const;
 
 	public:

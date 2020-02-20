@@ -8,10 +8,10 @@
 #ifndef ALARMSERVICE_ALARMSERVICE_H_
 #define ALARMSERVICE_ALARMSERVICE_H_
 
+#include <DeviceInterface.h>
+#include <DeviceService.h>
 #include <list>
-#include "DeviceServiceAbstract.h"
 #include "CommonDefs.h"
-#include "Device.h"
 #include "DevicesConfiguration.h"
 #include "AlarmTriggerInterface.h"
 #include <mutex>
@@ -21,7 +21,7 @@ using namespace std;
 class AlarmService: public DeviceServiceAbstract
 {
 	private:
-		shared_ptr<DeviceInfo> deviceConfiguration;
+		shared_ptr<DeviceInfoInterface> deviceConfiguration;
 		Status enableAlarm();
 		Status disableAlarm();
 		list<shared_ptr<AlarmTriggerInterface> > alarmSensors;
@@ -37,7 +37,7 @@ class AlarmService: public DeviceServiceAbstract
 
 		DeviceInfoData getData(const int deviceId) override;
 		Status setData(const int deviceId, DeviceInfoData data) override;
-		void prepareDeviceInfoSetup(const int deviceId, const shared_ptr<Device> device) override;
+		void prepareDeviceInfoSetup(const int deviceId, const shared_ptr<DeviceInterface> device) override;
 		Status enableService() override;
 		Status disableService(string code) override;
 

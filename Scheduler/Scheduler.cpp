@@ -15,7 +15,7 @@ int  Scheduler::schedulerThreadFunction()
 {
 	int tenthOfmilisec = 0;
 	DevicesRegister devRegister;
-	shared_ptr<DeviceInfo> deviceConfiguration = DevicesConfiguration::getInstance();
+	shared_ptr<DeviceInfoInterface> deviceConfiguration = DevicesConfiguration::getInstance();
 	vector<int> devicesId;
 	int scanningPeriod = 0;
 

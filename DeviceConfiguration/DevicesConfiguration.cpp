@@ -6,14 +6,14 @@
  */
 
 
+#include <XmlParser.h>
 #include "DevicesConfiguration.h"
-#include "XmlParser.h"
 #include <any>
 
 using namespace std;
 
 
-DevicesConfiguration::DevicesConfiguration(shared_ptr<Parser> parser)
+DevicesConfiguration::DevicesConfiguration(shared_ptr<ParserInterface> parser)
 {
 	int deviceId = DeviceIDNotInitialized;
 

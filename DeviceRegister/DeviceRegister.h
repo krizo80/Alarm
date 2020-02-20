@@ -1,5 +1,4 @@
-#include "Device.h"
-
+#include <DeviceInterface.h>
 #include <map>
 #include <memory>
 #include <vector>
@@ -10,13 +9,13 @@ using namespace std;
 class DevicesRegister
 {
 	private:
-		map<int, shared_ptr<Device>> deviceRegister;
+		map<int, shared_ptr<DeviceInterface>> deviceRegister;
 		static constexpr int deviceTypes = SENSOR_MAX;
-		static array<function<shared_ptr<Device>(int)>, deviceTypes> deviceType;
+		static array<function<shared_ptr<DeviceInterface>(int)>, deviceTypes> deviceType;
 
 	public:
 		DevicesRegister();
 		void registerDevices();
 		const vector<int> getRegistredDevicesId();
-		const shared_ptr<Device> getRegisteredDevice(const int deviceId);
+		const shared_ptr<DeviceInterface> getRegisteredDevice(const int deviceId);
 };

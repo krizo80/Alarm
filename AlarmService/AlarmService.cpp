@@ -117,7 +117,7 @@ Status AlarmService::setData(const int deviceId, DeviceInfoData data)
 	return status;
 }
 
-void AlarmService::prepareDeviceInfoSetup(const int deviceId, const shared_ptr<Device> device)
+void AlarmService::prepareDeviceInfoSetup(const int deviceId, const shared_ptr<DeviceInterface> device)
 {
 	SensorParameters sensorConfiguration;
 

@@ -8,13 +8,13 @@
 #ifndef MOVESENSOR_H_
 #define MOVESENSOR_H_
 
-#include "Device.h"
+#include <DeviceInterface.h>
 #include "CommonDefs.h"
 #include <iostream>
 
 using namespace std;
 
-class MoveSensor : public Device
+class MoveSensor : public DeviceInterface
 {
 	private:
 		const int deviceAddress;

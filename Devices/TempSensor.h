@@ -8,13 +8,13 @@
 #ifndef TEMPSENSOR_H_
 #define TEMPSENSOR_H_
 
-#include "Device.h"
+#include <DeviceInterface.h>
 #include "CommonDefs.h"
 #include <iostream>
 
 using namespace std;
 
-class TempSensor : public Device
+class TempSensor : public DeviceInterface
 {
 	private:
 		const int deviceAddress;

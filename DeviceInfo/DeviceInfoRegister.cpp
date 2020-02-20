@@ -6,7 +6,7 @@
  */
 
 
-#include "DeviceInfoRegister.h"
+#include <DeviceInfoRegister.h>
 #include "DevicesConfiguration.h"
 #include "SensorEventsDatabase.h"
 #include "ReadingConverter.h"

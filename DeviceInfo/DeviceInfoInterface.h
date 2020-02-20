@@ -5,14 +5,14 @@
  *      Author: dom
  */
 
-#ifndef DEVICEINFO_DEVICEINFO_H_
-#define DEVICEINFO_DEVICEINFO_H_
+#ifndef DEVICEINFO_DEVICEINFOINTERFACE_H_
+#define DEVICEINFO_DEVICEINFOINTERFACE_H_
 
+#include <DeviceInterface.h>
 #include <memory>
 #include "CommonDefs.h"
-#include "Device.h"
 
-class DeviceInfo
+class DeviceInfoInterface
 {
 	public:
 		virtual DeviceInfoData getData(const int deviceId) = 0;
@@ -20,4 +20,4 @@ class DeviceInfo
 };
 
 
-#endif /* DEVICEINFO_DEVICEINFO_H_ */
+#endif /* DEVICEINFO_DEVICEINFOINTERFACE_H_ */

@@ -7,11 +7,11 @@
 
 
 
+#include <DeviceInterface.h>
+#include <DeviceService.h>
 #include "RestApiService.h"
 #include "CommonDefs.h"
-#include "DeviceServiceAbstract.h"
 #include "AlarmService.h"
-#include "Device.h"
 
 
 using namespace std;

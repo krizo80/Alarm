@@ -8,10 +8,9 @@
 #ifndef RESTSERVICE_RESTAPISERVICE_H_
 #define RESTSERVICE_RESTAPISERVICE_H_
 
+#include <DeviceInfoRegister.h>
 #include <iostream>
 #include "pistache/endpoint.h"
-#include "DeviceInfoRegister.h"
-
 #include <functional>
 #include <map>
 #include <vector>

@@ -8,7 +8,7 @@
 
 
 #include <DeviceInterface.h>
-#include <DeviceService.h>
+#include <DeviceServiceInterface.h>
 #include "RestApiService.h"
 #include "CommonDefs.h"
 #include "AlarmService.h"
@@ -161,7 +161,7 @@ string RestApiService::getConfig(map<string,string> parameters)
 
 string RestApiService::enableAlarm(map<string,string> parameters)
 {
-	shared_ptr<DeviceServiceAbstract> alarmService = AlarmService::getInstance();
+	shared_ptr<DeviceServiceInterface> alarmService = AlarmService::getInstance();
 
 	alarmService->enableService();
 
@@ -170,7 +170,7 @@ string RestApiService::enableAlarm(map<string,string> parameters)
 
 string RestApiService::disableAlarm(map<string,string> parameters)
 {
-	shared_ptr<DeviceServiceAbstract> alarmService = AlarmService::getInstance();
+	shared_ptr<DeviceServiceInterface> alarmService = AlarmService::getInstance();
 	string code = parameters["code"];
 	Status status = STATUS_OK;
 	string response = "<enabled>0</enabled>";

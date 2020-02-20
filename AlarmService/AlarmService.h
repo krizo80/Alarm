@@ -9,7 +9,7 @@
 #define ALARMSERVICE_ALARMSERVICE_H_
 
 #include <DeviceInterface.h>
-#include <DeviceService.h>
+#include <DeviceServiceInterface.h>
 #include <list>
 #include "CommonDefs.h"
 #include "DevicesConfiguration.h"
@@ -18,7 +18,7 @@
 
 using namespace std;
 
-class AlarmService: public DeviceServiceAbstract
+class AlarmService: public DeviceServiceInterface
 {
 	private:
 		shared_ptr<DeviceInfoInterface> deviceConfiguration;

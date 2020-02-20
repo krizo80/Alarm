@@ -8,11 +8,11 @@
 #ifndef DEVICEEVENTS_SENSOREVENTSDATABASE_H_
 #define DEVICEEVENTS_SENSOREVENTSDATABASE_H_
 
-#include <DeviceService.h>
+#include <DeviceServiceInterface.h>
 #include <map>
 #include <any>
 
-class SensorEventsDatabase : public DeviceServiceAbstract
+class SensorEventsDatabase : public DeviceServiceInterface
 {
 	private:
 		static map<int, SensorReading> lastSensorsEvents;

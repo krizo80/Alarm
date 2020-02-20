@@ -10,7 +10,7 @@
 
 
 #include <DeviceRegister.h>
-#include <DeviceService.h>
+#include <DeviceServiceInterface.h>
 #include <iostream>
 #include <memory>
 #include "CommonDefs.h"
@@ -27,7 +27,7 @@ class Scheduler
 {
 	private:
 		static constexpr int maxSources = 2;
-		array<shared_ptr<DeviceServiceAbstract>,maxSources> readingSources;
+		array<shared_ptr<DeviceServiceInterface>,maxSources> readingSources;
 		int  schedulerThreadFunction();
 		const int scanningTimer = 100;
 

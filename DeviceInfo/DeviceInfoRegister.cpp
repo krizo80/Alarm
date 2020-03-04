@@ -16,8 +16,8 @@ using namespace std;
 DeviceInfoRegister::DeviceInfoRegister()
 {
 	deviceInfoSource.push_back(DevicesConfiguration::getInstance());
-	//todo: provide destructor
-	deviceInfoSource.push_back(make_shared<SensorEventsDatabase>());
+	//todo: provide deconstructor
+	deviceInfoSource.push_back(SensorEventsDatabase::getInstance());
 }
 
 map<string,string> DeviceInfoRegister::getConfigurationDeviceInfo(int deviceId)

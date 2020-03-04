@@ -190,7 +190,11 @@ map<string,function<string(map<string,string>)>> RestApiService::apiCommands =
 		{"GetReading", getReading},
 		{"GetConfig" , getConfig },
 		{"EnableAlarm" , enableAlarm },
-		{"DisableAlarm" , disableAlarm }
+		{"DisableAlarm" , disableAlarm },
+
+		//TODO: add implementation
+		{"GetTemperature" , disableAlarm },
+		{"GetAlerts" , disableAlarm }
 };
 
 DeviceInfoRegister RestApiService::deviceRegister;

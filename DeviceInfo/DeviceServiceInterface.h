@@ -12,7 +12,7 @@
 #include <DeviceInfoInterface.h>
 #include <DevicetSetupInterface.h>
 
-class DeviceServiceInterface : public DeviceInfoInterface, public DeviceSetupInterface
+class DeviceServiceInterface : public DeviceSetupInterface
 {
 public:
 	virtual Status enableService() = 0;

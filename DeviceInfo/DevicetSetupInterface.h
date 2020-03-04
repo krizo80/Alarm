@@ -12,7 +12,7 @@
 #include <memory>
 #include "CommonDefs.h"
 
-class DeviceSetupInterface
+class DeviceSetupInterface :  public DeviceInfoInterface
 {
 	public:
 		virtual void prepareDeviceInfoSetup(const int deviceId, const shared_ptr<DeviceInterface> device) = 0;

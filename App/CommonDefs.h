@@ -72,6 +72,13 @@ typedef struct SensorReading
     Status status;
 } SensorReading;
 
+typedef struct DatabaseReadingEntry
+{
+	SensorReading reading;
+	int readingTimestamp;
+	bool isSensorGeneratingAlarm;
+} DatabaseReadingEntry;
+
 
 typedef any DeviceInfoData;
 

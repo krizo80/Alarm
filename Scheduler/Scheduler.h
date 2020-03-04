@@ -27,14 +27,14 @@ class Scheduler
 {
 	private:
 		static constexpr int maxSources = 2;
-		array<shared_ptr<DeviceServiceInterface>,maxSources> readingSources;
+		array<shared_ptr<DeviceSetupInterface>,maxSources> readingSources;
 		int  schedulerThreadFunction();
 		const int scanningTimer = 100;
 
 	public:
 		Scheduler() : readingSources(
 				{
-					make_shared<SensorEventsDatabase>(),
+					SensorEventsDatabase::getInstance(),
 					AlarmService::getInstance()
 				}
 		){}

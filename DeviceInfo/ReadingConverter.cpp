@@ -14,8 +14,8 @@ string ReadingConverter::ConvertReadingToString(SensorReading reading)
 	string result;
 	try
 	{
-		auto callback = readingConverterArray.at(reading.readingType);
-		result = to_string(callback(reading.lastReadingValue));
+		auto callback = readingConverterToStringArray.at(reading.readingType);
+		result = callback(reading.lastReadingValue);
 	}
 	catch (const std::out_of_range &exception)
 	{
@@ -39,6 +39,23 @@ string ReadingConverter::ConvertStatusToString(SensorReading reading)
 			break;
 		default:
 			result = "GENERIC ERROR";
+	}
+
+	return result;
+}
+
+
+bool ReadingConverter::ConvertReadingToAlarm(SensorReading reading, int thresholdValue)
+{
+	bool result;
+	try
+	{
+		auto callback = readingConverterToAlarmArray.at(reading.readingType);
+		result = callback(reading.lastReadingValue, thresholdValue);
+	}
+	catch (const std::out_of_range &exception)
+	{
+		result = false;
 	}
 
 	return result;

@@ -46,4 +46,15 @@ map<string,string> DeviceInfoRegister::getReadingDeviceInfo(int deviceId)
 	return result;
 }
 
+map<string,string> DeviceInfoRegister::getPresenceDeviceInfo(int deviceId)
+{
+	map<string,string> result;
+	ReadingConverter converter;
+	SensorReading reading = any_cast<SensorReading>(deviceInfoSource[1]->getData(deviceId));
+
+	result["value"] = converter.ConvertReadingToString(reading);
+	result["status"] = converter.ConvertStatusToString(reading);
+
+	return result;
+}
 

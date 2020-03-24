@@ -8,6 +8,9 @@
 
 
 #include "SensorEventsDatabase.h"
+#include "ReadingConverter.h"
+#include <chrono>
+#include <ratio>
 
 using namespace std;
 
@@ -34,25 +37,39 @@ void SensorEventsDatabase::prepareDeviceInfoSetup(const int deviceId, const shar
 	//initialize sensors reading data
 	data.reading = device->getDeviceReading();
 	data.isSensorGeneratingAlarm = false;
-	data.readingTimestamp= 0;
-
 	lastSensorsEvents[deviceId] = data;
 }
 
 Status SensorEventsDatabase::setData(const int deviceId, DeviceInfoData data)
 {
 	Status status = STATUS_OK;
+	ReadingConverter reading;
+	auto timeStamp = chrono::high_resolution_clock::now();
+	auto duration_msec = chrono::duration_cast<chrono::milliseconds>(timeStamp  - lastSensorsEvents[deviceId].lastExecedThrReadingTimestamp);
+
 	try
 	{
-		lastSensorsEvents[deviceId].reading = any_cast<SensorReading>(data);
-
-		//if readingTimestamp + time_from_config > current_ts
-		lastSensorsEvents[deviceId].isSensorGeneratingAlarm = false;
-		//else if reading is status_ok && reading_type alarm && readng == 1
-		lastSensorsEvents[deviceId].isSensorGeneratingAlarm = true;
-
-		lastSensorsEvents[deviceId].readingTimestamp = 0;
-		//todo: add timestamp, and calculate isSensorGeneratingAlarm depends settings
+		if (lastSensorsEvents[deviceId].reading.status == STATUS_OK)
+		{
+			auto thresholdExceded = reading.ConvertReadingToAlarm(any_cast<SensorReading>(data), any_cast<SensorParameters>(deviceConfiguration->getData(deviceId)).enableThresholdValue);
+			if( true == thresholdExceded )
+			{
+				if (false == lastSensorsEvents[deviceId].isValidExecedTimeStamp)
+				{
+					lastSensorsEvents[deviceId].lastExecedThrReadingTimestamp = timeStamp;
+					lastSensorsEvents[deviceId].isValidExecedTimeStamp = true;
+				}
+				lastSensorsEvents[deviceId].isSensorGeneratingAlarm = true;
+			}
+			else if ((true == lastSensorsEvents[deviceId].isValidExecedTimeStamp) &&
+					(duration_msec.count() > timeOfPresenceSec))
+			{
+				lastSensorsEvents[deviceId].isValidExecedTimeStamp = false;
+				lastSensorsEvents[deviceId].isSensorGeneratingAlarm = false;
+			}
+			lastSensorsEvents[deviceId].readingTimestamp = timeStamp;
+			lastSensorsEvents[deviceId].reading = any_cast<SensorReading>(data);
+		}
 	}
 	catch(bad_any_cast &e)
 	{
@@ -64,11 +81,11 @@ Status SensorEventsDatabase::setData(const int deviceId, DeviceInfoData data)
 
 SensorEventsDatabase::SensorEventsDatabase()
 {
-	shared_ptr<ConfigSettingInterface> configurationSettings = DevicesConfiguration::getInstance();
-
+	deviceConfiguration = DevicesConfiguration::getInstance();
 	try
 	{
-		timeOfPresenceSec = stoi(configurationSettings->getSettingValue("timeOfPresenceSec").value);
+		timeOfPresenceSec = 0;
+		timeOfPresenceSec = stoi(deviceConfiguration->getSettingValue("timeOfPresenceSec").value);
 	}
 	catch (invalid_argument& e)
 	{

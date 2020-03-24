@@ -141,6 +141,24 @@ string RestApiService::getReading(map<string,string> parameters)
 	return response;
 }
 
+string RestApiService::getPresence(map<string,string> parameters)
+{
+	int sensorId;
+	string response;
+
+	try
+	{
+		sensorId = stoi(parameters["id"]);
+		response = generateResponse(parameters["id"], deviceRegister.getPresenceDeviceInfo(sensorId));
+	}
+	catch (invalid_argument& e)
+	{
+		response = generateErrorResponse(parameters["id"], "Invalid parameter");
+	}
+
+	return response;
+}
+
 string RestApiService::getConfig(map<string,string> parameters)
 {
 	int sensorId;
@@ -192,8 +210,11 @@ map<string,function<string(map<string,string>)>> RestApiService::apiCommands =
 		{"EnableAlarm" , enableAlarm },
 		{"DisableAlarm" , disableAlarm },
 
-		//TODO: add implementation
+		//Below methods return data for all available sensors
+		//TODO: add implementation based on getReadings
 		{"GetTemperature" , disableAlarm },
+		{"GetPresence" , getPresence },
+		//TODO: add implementation from AlarmService
 		{"GetAlerts" , disableAlarm }
 };
 

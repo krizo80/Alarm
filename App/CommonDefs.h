@@ -9,6 +9,7 @@
 #define COMMONDEFS_H_
 
 #include <string>
+#include <chrono>
 #include <any>
 
 using namespace std;
@@ -75,8 +76,10 @@ typedef struct SensorReading
 typedef struct DatabaseReadingEntry
 {
 	SensorReading reading;
-	int readingTimestamp;
+	chrono::time_point<chrono::system_clock> lastExecedThrReadingTimestamp;
+	chrono::time_point<chrono::system_clock> readingTimestamp;
 	bool isSensorGeneratingAlarm;
+	bool isValidExecedTimeStamp;
 } DatabaseReadingEntry;
 
 

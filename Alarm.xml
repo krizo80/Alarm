@@ -6,8 +6,16 @@
 	<!- after this time sensor considers user is not any more in room --> 	
 	<setting name="timeOfPresenceSec" value="2"/>
 	
+	
 	<!- number of catches during one second needed to enable alarm -->
 	<setting name="retriesInSec" value="1"/>
+	
+	<!- time for disable alarm before it will generate  -->
+	<setting name="waitingTimeInSec" value="30"/>
+
+	<!- time after armed alarm reserved to leave  -->
+	<setting name="startWaitingTimeInSec" value="30"/>
+	
 </settings>
 	
 <sensors>

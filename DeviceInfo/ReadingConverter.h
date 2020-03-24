@@ -17,18 +17,27 @@
 class ReadingConverter
 {
 	private:
-		array<function<int(int)>, READING_MAX> readingConverterArray;
+		array<function<string(int)>, READING_MAX> readingConverterToStringArray;
+		array<function<bool(int, int)>, READING_MAX> readingConverterToAlarmArray;
 
 	public:
-		ReadingConverter() : readingConverterArray(
+		ReadingConverter() : readingConverterToStringArray(
 		{
-			[](int value)->int { return value; },
-			[](int value)->int { return value; },
-			[](int value)->int { return value; }
+			[](int value)->string { return to_string(value); },
+			[](int value)->string { return to_string(value >> 12) + "." + to_string(value & 0xFFF);  },
+			[](int value)->string { return to_string(value & 0x01); }
+		}),
+		readingConverterToAlarmArray(
+		{
+			[](int value, int thr)->bool { return (value > thr) ? true : false; },
+			[](int value, int thr)->bool { return (value > (thr << 12))? true : false; },
+			[](int value, int thr)->bool { return (value == thr) ? true : false; }
 		})
 		{}
+
 		string ConvertReadingToString(SensorReading reading);
 		string ConvertStatusToString(SensorReading rading);
+		bool   ConvertReadingToAlarm(SensorReading reading, int thresholdValue);
 
 };
 

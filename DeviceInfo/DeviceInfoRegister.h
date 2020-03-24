@@ -26,6 +26,8 @@ class DeviceInfoRegister
 		DeviceInfoRegister();
 		map<string,string> getConfigurationDeviceInfo(int deviceId);
 		map<string,string> getReadingDeviceInfo(int deviceId);
+
+		map<string,string> getPresenceDeviceInfo(int deviceId);
 };
 
 

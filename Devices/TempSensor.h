@@ -22,7 +22,7 @@ class TempSensor : public DeviceInterface
 
 
     public:
-		TempSensor(int address) : deviceAddress(address), readingType(READING_STATE) {}
+		TempSensor(int address) : deviceAddress(address), readingType(READING_FIXED_INT) {}
 		SensorReading getDeviceReading() override;
 
 		virtual ~TempSensor() {}

@@ -11,11 +11,10 @@
 SensorReading MoveSensor::getDeviceReading()
 {
 	SensorReading reading;
-	static int a;
+
 
 	reading.readingType = this->readingType;
-	reading.lastReadingValue = a;
-	a++;
+	reading.lastReadingValue = 3;
 	reading.status = STATUS_OK;
 
 	cout << "MOVE SENSOR with address = " << deviceAddress << endl;

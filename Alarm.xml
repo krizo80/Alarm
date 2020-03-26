@@ -22,6 +22,9 @@
     <sensor name="Kuchnia" sensorType="0" threshold="1" scanningPeriod="1" address="44" enabled="1"/>
     <sensor name="Salon" sensorType="0" threshold="1" scanningPeriod="1" address="744" enabled="1"/>
     <sensor name="Gabinet" sensorType="0" threshold="1" scanningPeriod="1" address="64" enabled="1"/>
+
     <sensor name="Termometr Salon" sensorType="1" threshold="30" scanningPeriod="10" address="4" enabled="1"/>
+    <sensor name="Termometr Sypialnia Nati" sensorType="1" threshold="50" scanningPeriod="10" address="7" enabled="1"/>
+
     <sensor name="Sygnal Alarmowy" sensorType="4" threshold="30" scanningPeriod="10" address="4" enabled="1"/>
 </sensors>

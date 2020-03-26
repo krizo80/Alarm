@@ -12,9 +12,8 @@ SensorReading TempSensor::getDeviceReading()
 	SensorReading reading;
 
 	reading.readingType = this->readingType;
-	reading.lastReadingValue = 6;
+	reading.lastReadingValue = (31 << 12);
 	reading.status = STATUS_OK;
-
 	cout << "TEMPERATURE SENSOR with address = " << deviceAddress << endl;
 	return reading;
 }

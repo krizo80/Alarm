@@ -93,18 +93,49 @@ map<string,string> RestApiService::getParameters(const string inputQuery)
 	return apiParams;
 }
 
-string RestApiService::generateResponse(string sensorId, map<string,string> responseElements)
+string RestApiService::generateSingleElementResponse(xmlResponse responseElements)
 {
 	string response;
 
+	response = "<sensor>";
+	for (auto &element : responseElements)
+	{
+		response += "<sensorId>" + to_string(element.first) + "</sensorId>";
+		for (auto &params : element.second)
+			response += "<" + params.first +">" + params.second + "</" + params.first +">";
+	}
+
+	response += "</sensor>";
 	//prepare response
+	/*
 	response = "<sensosId>" + sensorId + "</sensorId>";
 
 	for (auto &element : responseElements)
 	{
 		response += "<" + element.first +">" + element.second + "</" + element.first +">";
 	}
+*/
+	return response;
+}
 
+string RestApiService::generateResponse(xmlResponse responseElements)
+{
+	string response;
+
+	response = "<sensors>";
+
+	//prepare response
+	for (auto &element : responseElements)
+	{
+		response += "<sensor>";
+
+		for (auto &xmlElement : element.second)
+			response += "<" + xmlElement.first +">" + xmlElement.second + "</" + xmlElement.first +">";
+
+		response += "</sensor>";
+	}
+
+	response += "</sensors>";
 	return response;
 }
 
@@ -131,7 +162,7 @@ string RestApiService::getReading(map<string,string> parameters)
 	try
 	{
 		sensorId = stoi(parameters["id"]);
-		response = generateResponse(parameters["id"], deviceRegister.getReadingDeviceInfo(sensorId));
+		response = generateSingleElementResponse(deviceRegister.getReadingDeviceInfo(sensorId));
 	}
 	catch (invalid_argument& e)
 	{
@@ -143,18 +174,18 @@ string RestApiService::getReading(map<string,string> parameters)
 
 string RestApiService::getPresence(map<string,string> parameters)
 {
-	int sensorId;
 	string response;
 
-	try
-	{
-		sensorId = stoi(parameters["id"]);
-		response = generateResponse(parameters["id"], deviceRegister.getPresenceDeviceInfo(sensorId));
-	}
-	catch (invalid_argument& e)
-	{
-		response = generateErrorResponse(parameters["id"], "Invalid parameter");
-	}
+	response = generateResponse(deviceRegister.getPresenceDeviceInfo());
+
+	return response;
+}
+
+string RestApiService::getTemperature(map<string,string> parameters)
+{
+	string response;
+
+	response = generateResponse(deviceRegister.getTemperatureDeviceInfo());
 
 	return response;
 }
@@ -167,7 +198,7 @@ string RestApiService::getConfig(map<string,string> parameters)
 	try
 	{
 		sensorId = stoi(parameters["id"]);
-		response = generateResponse(parameters["id"], deviceRegister.getConfigurationDeviceInfo(sensorId));
+		response = generateSingleElementResponse(deviceRegister.getConfigurationDeviceInfo(sensorId));
 	}
 	catch (invalid_argument& e)
 	{
@@ -211,9 +242,9 @@ map<string,function<string(map<string,string>)>> RestApiService::apiCommands =
 		{"DisableAlarm" , disableAlarm },
 
 		//Below methods return data for all available sensors
-		//TODO: add implementation based on getReadings
-		{"GetTemperature" , disableAlarm },
+		{"GetTemperature" , getTemperature },
 		{"GetPresence" , getPresence },
+
 		//TODO: add implementation from AlarmService
 		{"GetAlerts" , disableAlarm }
 };

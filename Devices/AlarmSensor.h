@@ -24,6 +24,7 @@ class AlarmSensor : public DeviceInterface, public AlarmTriggerInterface
 
 
     public:
+		//TODO: reading type is hardcoded here, but also used in alarm.xml file - shall be used one of them (the same for rest devices)
 		AlarmSensor(int address) : deviceAddress(address), readingType(READING_STATE) {}
 		virtual ~AlarmSensor() {}
 

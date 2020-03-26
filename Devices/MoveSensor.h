@@ -22,7 +22,7 @@ class MoveSensor : public DeviceInterface
 
 
     public:
-		MoveSensor(int address) : deviceAddress(address), readingType(READING_FIXED_INT) {}
+		MoveSensor(int address) : deviceAddress(address), readingType(READING_STATE) {}
 		virtual ~MoveSensor() {}
 		SensorReading getDeviceReading() override;
 };

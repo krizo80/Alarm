@@ -11,6 +11,7 @@
 #include <string>
 #include <chrono>
 #include <any>
+#include <map>
 
 using namespace std;
 
@@ -85,5 +86,6 @@ typedef struct DatabaseReadingEntry
 
 typedef any DeviceInfoData;
 
+typedef map<int, map<string, string> > xmlResponse;
 
 #endif /* COMMONDEFS_H_ */

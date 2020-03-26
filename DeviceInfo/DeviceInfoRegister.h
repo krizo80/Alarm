@@ -24,10 +24,11 @@ class DeviceInfoRegister
 
 	public:
 		DeviceInfoRegister();
-		map<string,string> getConfigurationDeviceInfo(int deviceId);
-		map<string,string> getReadingDeviceInfo(int deviceId);
+		xmlResponse getConfigurationDeviceInfo(int deviceId);
+		xmlResponse getReadingDeviceInfo(int deviceId);
 
-		map<string,string> getPresenceDeviceInfo(int deviceId);
+		xmlResponse getPresenceDeviceInfo();
+		xmlResponse getTemperatureDeviceInfo();
 };
 
 

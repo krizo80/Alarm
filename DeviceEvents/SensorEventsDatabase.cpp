@@ -16,18 +16,25 @@ using namespace std;
 
 DeviceInfoData SensorEventsDatabase::getData(const int deviceId)
 {
-	SensorReading reading = {};
+	DatabaseReadingEntry readingEntry = {};
 
 	if (lastSensorsEvents.find(deviceId) == lastSensorsEvents.end())
 	{
-		reading.status = STATUS_SENSOR_NOT_EXIST;
+		if (deviceId > lastDeviceIdx)
+		{
+			readingEntry.reading.status = STATUS_XML_NO_MORE_SENSORS;
+		}
+		else
+		{
+			readingEntry.reading.status = STATUS_SENSOR_NOT_EXIST;
+		}
 	}
 	else
 	{
-		reading = lastSensorsEvents[deviceId].reading;
+		readingEntry = lastSensorsEvents[deviceId];
 	}
 
-	return reading;
+	return readingEntry;
 }
 
 void SensorEventsDatabase::prepareDeviceInfoSetup(const int deviceId, const shared_ptr<DeviceInterface> device)
@@ -69,6 +76,11 @@ Status SensorEventsDatabase::setData(const int deviceId, DeviceInfoData data)
 			}
 			lastSensorsEvents[deviceId].readingTimestamp = timeStamp;
 			lastSensorsEvents[deviceId].reading = any_cast<SensorReading>(data);
+
+			if(lastDeviceIdx < deviceId)
+			{
+				lastDeviceIdx = deviceId;
+			}
 		}
 	}
 	catch(bad_any_cast &e)

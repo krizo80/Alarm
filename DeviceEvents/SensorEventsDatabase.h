@@ -19,6 +19,7 @@ class SensorEventsDatabase : public DeviceSetupInterface
 	private:
 		map<int, DatabaseReadingEntry> lastSensorsEvents;
 		int timeOfPresenceSec;
+		int lastDeviceIdx;
 		shared_ptr<DevicesConfiguration> deviceConfiguration;
 
 		static shared_ptr<SensorEventsDatabase> instance;

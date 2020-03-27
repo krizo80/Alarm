@@ -106,15 +106,7 @@ string RestApiService::generateSingleElementResponse(xmlResponse responseElement
 	}
 
 	response += "</sensor>";
-	//prepare response
-	/*
-	response = "<sensosId>" + sensorId + "</sensorId>";
 
-	for (auto &element : responseElements)
-	{
-		response += "<" + element.first +">" + element.second + "</" + element.first +">";
-	}
-*/
 	return response;
 }
 
@@ -225,10 +217,36 @@ string RestApiService::disableAlarm(map<string,string> parameters)
 	string response = "<enabled>0</enabled>";
 
 	status = alarmService->disableService(code);
+
 	if (status != STATUS_OK)
 	{
 		response = "<enabled>1</enabled>";
 	}
+
+	return response;
+}
+
+string RestApiService::getAlerts(map<string,string> parameters)
+{
+	shared_ptr<DeviceInfoInterface> alarmService = AlarmService::getInstance();
+	xmlResponse xmlResponse;
+	AlarmReading reading;
+	int sensorIdx = 0;
+	string response;
+
+	do
+	{
+		reading = any_cast<AlarmReading>(alarmService->getData(sensorIdx));
+		if (STATUS_OK == reading.status)
+		{
+			xmlResponse[sensorIdx].insert(pair<string, string>("sensorName",reading.sensorName));
+			xmlResponse[sensorIdx].insert(pair<string, string>("alert",to_string(reading.isActivate)));
+		}
+		sensorIdx++;
+	}
+	while (reading.status != STATUS_XML_NO_MORE_SENSORS);
+
+	response = generateResponse(xmlResponse);
 
 	return response;
 }
@@ -244,9 +262,7 @@ map<string,function<string(map<string,string>)>> RestApiService::apiCommands =
 		//Below methods return data for all available sensors
 		{"GetTemperature" , getTemperature },
 		{"GetPresence" , getPresence },
-
-		//TODO: add implementation from AlarmService
-		{"GetAlerts" , disableAlarm }
+		{"GetAlerts" , getAlerts }
 };
 
 DeviceInfoRegister RestApiService::deviceRegister;

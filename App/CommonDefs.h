@@ -74,6 +74,13 @@ typedef struct SensorReading
     Status status;
 } SensorReading;
 
+typedef struct AlarmReading
+{
+	string sensorName;
+    bool isActivate;
+    Status status;
+} AlarmReading;
+
 typedef struct DatabaseReadingEntry
 {
 	SensorReading reading;

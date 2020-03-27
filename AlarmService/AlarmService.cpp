@@ -83,12 +83,35 @@ Status AlarmService::disableService(string code)
 
 DeviceInfoData AlarmService::getData(const int deviceId)
 {
-	//todo: this function shall report if threshold for particular sensor is exceeded.
+	AlarmReading reading;
+
+	synch.lock();
+
+	if (this->alerts.find(deviceId) == this->alerts.end())
+	{
+		if (deviceId > this->maxSensorIdx)
+		{
+			reading.status = STATUS_XML_NO_MORE_SENSORS;
+		}
+		else
+		{
+			reading.status = STATUS_SENSOR_NOT_EXIST;
+		}
+	}
+	else
+	{
+		reading = this->alerts[deviceId];
+	}
+
+	synch.unlock();
+
+	return reading;
 }
 
 Status AlarmService::setData(const int deviceId, DeviceInfoData data)
 {
 	Status status = STATUS_OK;
+	AlarmReading reading;
 
 	synch.lock();
 
@@ -97,13 +120,25 @@ Status AlarmService::setData(const int deviceId, DeviceInfoData data)
 		SensorParameters configData = any_cast<SensorParameters>(deviceConfiguration->getData(deviceId));
 		SensorReading readingData = any_cast<SensorReading>(data);
 
+		reading.sensorName = configData.sensorName;
+
 		cout << "SensorId ( " << configData.sensorName << ") = " << deviceId << " Value =" <<  readingData.lastReadingValue << " threshold = " <<  configData.enableThresholdValue << endl;
 		if((readingData.status == STATUS_OK) && (readingData.lastReadingValue > configData.enableThresholdValue))
 		{
+			reading.isActivate = true;
+			reading.status = STATUS_OK;
+			this->alerts[deviceId] = reading;
 			enableAlarm();
+		}
+		else if (readingData.status == STATUS_OK)
+		{
+			reading.isActivate = false;
+			reading.status = STATUS_OK;
+			this->alerts[deviceId] = reading;
 		}
 		else if (readingData.status != STATUS_OK)
 		{
+			reading.status = STATUS_READING_EXCEPTION;
 			//todo: log critical event - sensor issue
 		}
 	}
@@ -137,6 +172,7 @@ AlarmService::AlarmService()
 {
 	deviceConfiguration = DevicesConfiguration::getInstance();
 	isAlarmArmed = false;
+	maxSensorIdx = -1;
 }
 
 shared_ptr<AlarmService> AlarmService::getInstance()

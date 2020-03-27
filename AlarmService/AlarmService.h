@@ -11,6 +11,7 @@
 #include <DeviceInterface.h>
 #include <DeviceServiceInterface.h>
 #include <list>
+#include <map>
 #include "CommonDefs.h"
 #include "DevicesConfiguration.h"
 #include "AlarmTriggerInterface.h"
@@ -26,6 +27,8 @@ class AlarmService: public DeviceServiceInterface
 		Status disableAlarm();
 		list<shared_ptr<AlarmTriggerInterface> > alarmSensors;
 		bool isAlarmArmed;
+		int maxSensorIdx;
+		map<int, AlarmReading> alerts;
 
 		AlarmService();
 

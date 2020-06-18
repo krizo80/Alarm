@@ -52,6 +52,7 @@ Status SensorEventsDatabase::setData(const int deviceId, DeviceInfoData data)
 	Status status = STATUS_OK;
 	ReadingConverter reading;
 	auto timeStamp = chrono::high_resolution_clock::now();
+    //todo: deviceId is not checked against overflow
 	auto duration_msec = chrono::duration_cast<chrono::milliseconds>(timeStamp  - lastSensorsEvents[deviceId].lastExecedThrReadingTimestamp);
 
 	try
@@ -74,6 +75,7 @@ Status SensorEventsDatabase::setData(const int deviceId, DeviceInfoData data)
 				lastSensorsEvents[deviceId].isValidExecedTimeStamp = false;
 				lastSensorsEvents[deviceId].isSensorGeneratingAlarm = false;
 			}
+
 			lastSensorsEvents[deviceId].readingTimestamp = timeStamp;
 			lastSensorsEvents[deviceId].reading = any_cast<SensorReading>(data);
 

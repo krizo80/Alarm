@@ -15,7 +15,6 @@
 #include <memory>
 #include "CommonDefs.h"
 #include "array"
-//todo: only relative path
 #include "SensorEventsDatabase.h"
 #include "AlarmService.h"
 

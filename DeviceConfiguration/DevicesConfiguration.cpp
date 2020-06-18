@@ -106,7 +106,7 @@ DeviceInfoData DevicesConfiguration::getData(const int deviceId)
 	return config;
 }
 
-//todo: change configuration settings
+//todo: change configuration settings - maybe add some command to change parameters in the fly
 Status DevicesConfiguration::setData(const int deviceId, DeviceInfoData data)
 {
 	Status status = STATUS_OK;

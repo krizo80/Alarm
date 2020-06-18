@@ -11,9 +11,11 @@
 #include "AlarmService.h"
 #include "AlarmSensor.h"
 
+
 using namespace std;
 
-Status AlarmService::enableAlarm()
+
+Status AlarmService::callbackFunction()
 {
 	Status status = STATUS_OK;
 
@@ -31,6 +33,14 @@ Status AlarmService::enableAlarm()
 
 	return status;
 }
+
+Status AlarmService::enableAlarm()
+{
+	this->connect();
+
+	return STATUS_OK;
+}
+
 
 
 Status AlarmService::disableAlarm()
@@ -51,6 +61,8 @@ Status AlarmService::disableAlarm()
 Status AlarmService::enableService()
 {
 	synch.lock();
+
+	//todo: implement timer to enable/generate alarm - test it
 
 	isAlarmArmed = true;
 
@@ -122,12 +134,14 @@ Status AlarmService::setData(const int deviceId, DeviceInfoData data)
 
 		reading.sensorName = configData.sensorName;
 
-		cout << "SensorId ( " << configData.sensorName << ") = " << deviceId << " Value =" <<  readingData.lastReadingValue << " threshold = " <<  configData.enableThresholdValue << endl;
 		if((readingData.status == STATUS_OK) && (readingData.lastReadingValue > configData.enableThresholdValue))
 		{
+			cout << "SensorId ( " << configData.sensorName << ") = " << deviceId << " Value =" <<  readingData.lastReadingValue << " threshold = " <<  configData.enableThresholdValue << endl;
+
 			reading.isActivate = true;
 			reading.status = STATUS_OK;
 			this->alerts[deviceId] = reading;
+
 			enableAlarm();
 		}
 		else if (readingData.status == STATUS_OK)
@@ -170,9 +184,41 @@ void AlarmService::prepareDeviceInfoSetup(const int deviceId, const shared_ptr<D
 
 AlarmService::AlarmService()
 {
+	SettingParameters params;
 	deviceConfiguration = DevicesConfiguration::getInstance();
 	isAlarmArmed = false;
 	maxSensorIdx = -1;
+	//set default alarm settings
+	waitingTimeInSec = 30;
+	countOfAlarmTiggerInSec = 1;
+
+	try
+	{
+		params = dynamic_pointer_cast<DevicesConfiguration>(deviceConfiguration)->getSettingValue("waitingTimeInSec");
+		if(STATUS_OK == params.status)
+		{
+			waitingTimeInSec = stoi(params.value);
+		}
+	}
+	catch (invalid_argument& e)
+	{
+		//set default value
+		waitingTimeInSec = 30;
+		//todo : log exception
+	}
+
+	try
+	{
+		params = dynamic_pointer_cast<DevicesConfiguration>(deviceConfiguration)->getSettingValue("retriesInSec");
+		countOfAlarmTiggerInSec = stoi(params.value);
+	}
+	catch (invalid_argument& e)
+	{
+		//set default value
+		countOfAlarmTiggerInSec = 1;
+		//todo : log exception
+	}
+
 }
 
 shared_ptr<AlarmService> AlarmService::getInstance()

@@ -1,0 +1,71 @@
+@startuml
+
+interface DeviceAbstract {
++SensorReading getDeviceReading()
+}
+
+interface DeviceInfoAbstract {
+
+}
+
+interface ParserAbstract {
+
+}
+
+class XmlParser {
+
+}
+
+class Initializer {
++init()
++begin()
+}
+
+class MoveSensor {
+
+}
+
+class DevicesConfiguration {
+-list<ConfigurationEntry> configurationEntries
++ConfigurationEntry getConfigByDeviceId(int deviceId)
+}
+
+class ConfigurationEntry {
+-list<ConfigurationEntry> configurationEntries
++ConfigurationEntry getConfigByDeviceId(int deviceId)
+}
+
+class DeviceRegister {
+-map<deviceId,Device> devices
++Status registerDevice()
++Status unregisterDevice(int deviceId)
++list<int> getRegistredDeviceIds()
+}
+
+class SensorParameters {
+}
+
+Initializer ..> Scheduler : create
+Initializer ..> RestApiService : create
+
+
+Scheduler o-- DeviceRegister
+Scheduler --> DeviceInfoAbstract : use to pass data to\n AlarmService and database
+DeviceRegister --> DeviceInfoAbstract : use to read\n configuration
+DeviceRegister-->DeviceAbstract : use to perform readings
+
+MoveSensor ..|> DeviceAbstract
+AlarmSensor ..|> DeviceAbstract
+TemperatureSensor ..|> DeviceAbstract
+CO2Sensor ..|> DeviceAbstract
+GasSensor ..|> DeviceAbstract
+
+DevicesConfiguration ..|>DeviceInfoAbstract
+ConfigurationEntry "*" --o "1" DevicesConfiguration
+
+ConfigurationEntry *-- SensorParameters
+
+DevicesConfiguration o-- ParserAbstract
+XmlParser ..|> ParserAbstract
+XmlParser --> SensorParameters
+@enduml

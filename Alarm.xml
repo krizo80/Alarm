@@ -10,12 +10,8 @@
 	<!- number of catches during one second needed to enable alarm -->
 	<setting name="retriesInSec" value="1"/>
 	
-	<!- time for disable alarm before it will generate  -->
-	<setting name="waitingTimeInSec" value="30"/>
-
-	<!- time after armed alarm reserved to leave  -->
-	<setting name="startWaitingTimeInSec" value="30"/>
-	
+	<!- time for disable alarm before it will generate signal, also time needed to leave after enabled alarm -->
+	<setting name="waitingTimeInSec" value="30"/>	
 </settings>
 	
 <sensors>

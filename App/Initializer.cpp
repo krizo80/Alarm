@@ -33,7 +33,7 @@ void Initializer::begin()
 {
 	// starts all threads
 	thread schedulerThread(Scheduler(), 3);
-	Pistache::Http::listenAndServe<RestApiService>("*:9080");
+	Pistache::Http::listenAndServe<RestApiService>(static_cast<Pistache::Address>("*:9080"));
 
 	schedulerThread.join();
 }

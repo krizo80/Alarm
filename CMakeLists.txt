@@ -17,7 +17,7 @@ include_directories(AlarmService)
 include_directories(RestService)
 include_directories(DeviceConfiguration)
 #code and header for library rapidxml
-include_directories(/usr/include/rapidxml)
+include_directories(/usr/local/include/rapidxml)
 #header for pistache library
 include_directories(/usr/local/include/pistache)
 

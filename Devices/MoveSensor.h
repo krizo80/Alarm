@@ -17,12 +17,12 @@ using namespace std;
 class MoveSensor : public DeviceInterface
 {
 	private:
-		const int deviceAddress;
+		const string deviceAddress;
 		const ReadingType readingType;
 
 
     public:
-		MoveSensor(int address) : deviceAddress(address), readingType(READING_STATE) {}
+		MoveSensor(string address) : deviceAddress(address), readingType(READING_STATE) {}
 		virtual ~MoveSensor() {}
 		SensorReading getDeviceReading() override;
 };

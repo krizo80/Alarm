@@ -19,12 +19,12 @@ using namespace std;
 class AlarmSensor : public DeviceInterface, public AlarmTriggerInterface
 {
 	private:
-		const int deviceAddress;
+		const string deviceAddress;
 		const ReadingType readingType;
 
 
     public:
-		AlarmSensor(int address) : deviceAddress(address), readingType(READING_STATE) {}
+		AlarmSensor(string address) : deviceAddress(address), readingType(READING_STATE) {}
 		virtual ~AlarmSensor() {}
 
 		SensorReading getDeviceReading() override;

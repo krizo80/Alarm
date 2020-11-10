@@ -18,6 +18,7 @@ int  Scheduler::schedulerThreadFunction()
 	shared_ptr<DeviceInfoInterface> deviceConfiguration = DevicesConfiguration::getInstance();
 	vector<int> devicesId;
 	int scanningPeriod = 0;
+	DeviceInfoData reading;
 
 	devRegister.registerDevices();
 	devicesId = devRegister.getRegistredDevicesId();
@@ -25,9 +26,8 @@ int  Scheduler::schedulerThreadFunction()
 	// setup consumers of readings
 	for (auto &deviceId : devicesId)
 		for (auto &source : readingSources)
-		{
 			source->prepareDeviceInfoSetup(deviceId, devRegister.getRegisteredDevice(deviceId));
-		}
+
 
 	//start to read sensors
 	while(1)
@@ -48,8 +48,10 @@ int  Scheduler::schedulerThreadFunction()
 			{
 				///todo:handle the status (may return value different then success)
 				//feed all connected sources
+				reading = devRegister.getRegisteredDevice(deviceId)->getDeviceReading();
+
 				for (auto &source : readingSources)
-					source->setData(deviceId,devRegister.getRegisteredDevice(deviceId)->getDeviceReading());
+					source->setData(deviceId, reading);
 			}
 		}
 		this_thread::sleep_for(chrono::milliseconds(scanningTimer));

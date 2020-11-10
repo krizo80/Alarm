@@ -61,12 +61,12 @@ const shared_ptr<DeviceInterface> DevicesRegister::getRegisteredDevice(const int
 
 
 constexpr int DevicesRegister::deviceTypes;
-array<function<shared_ptr<DeviceInterface>(int)>, DevicesRegister::deviceTypes> DevicesRegister::deviceType =
+array<function<shared_ptr<DeviceInterface>(string)>, DevicesRegister::deviceTypes> DevicesRegister::deviceType =
 {
-		[](int address)->shared_ptr<DeviceInterface> { return make_shared<MoveSensor>(address); },
-		[](int address)->shared_ptr<DeviceInterface> { return make_shared<TempSensor>(address); },
-		[](int address)->shared_ptr<DeviceInterface> { return make_shared<MoveSensor>(address); },
-		[](int address)->shared_ptr<DeviceInterface> { return make_shared<MoveSensor>(address); },
-		[](int address)->shared_ptr<DeviceInterface> { return make_shared<AlarmSensor>(address); }
+		[](string address)->shared_ptr<DeviceInterface> { return make_shared<MoveSensor>(address); },
+		[](string address)->shared_ptr<DeviceInterface> { return make_shared<TempSensor>(address); },
+		[](string address)->shared_ptr<DeviceInterface> { return make_shared<MoveSensor>(address); },
+		[](string address)->shared_ptr<DeviceInterface> { return make_shared<MoveSensor>(address); },
+		[](string address)->shared_ptr<DeviceInterface> { return make_shared<AlarmSensor>(address); }
 };
 

@@ -30,7 +30,7 @@ class ReadingConverter
 		readingConverterToAlarmArray(
 		{
 			[](int value, int thr)->bool { return (value > thr) ? true : false; },
-			[](int value, int thr)->bool { return (value > (thr << 12))? true : false; },
+			[](int value, int thr)->bool { return (value > (thr << 12) )? true : false; },
 			[](int value, int thr)->bool { return (thr == (value & thr)) ? true : false; }
 		})
 		{}

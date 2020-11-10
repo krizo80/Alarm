@@ -131,10 +131,12 @@ Status AlarmService::setData(const int deviceId, DeviceInfoData data)
 	{
 		SensorParameters configData = any_cast<SensorParameters>(deviceConfiguration->getData(deviceId));
 		SensorReading readingData = any_cast<SensorReading>(data);
+		ReadingConverter converter;
 
 		reading.sensorName = configData.sensorName;
 
-		if((readingData.status == STATUS_OK) && (readingData.lastReadingValue > configData.enableThresholdValue))
+		if((readingData.status == STATUS_OK) && (converter.ConvertReadingToAlarm(readingData, configData.enableThresholdValue)))
+		//if((readingData.status == STATUS_OK) && (readingData.lastReadingValue > configData.enableThresholdValue))
 		{
 			cout << "SensorId ( " << configData.sensorName << ") = " << deviceId << " Value =" <<  readingData.lastReadingValue << " threshold = " <<  configData.enableThresholdValue << endl;
 

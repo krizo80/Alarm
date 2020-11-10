@@ -27,7 +27,7 @@ SensorParameters XmlParser::readSensorParameters()
 			sensorData.sensorName = sensorsNode->first_attribute("name")->value();
 			sensorData.sensorType = static_cast<SensorType>(stoi(sensorsNode->first_attribute("sensorType")->value()));
 			sensorData.scanningPeriod = stoi(sensorsNode->first_attribute("scanningPeriod")->value());
-			sensorData.sensorAddress = stoi(sensorsNode->first_attribute("address")->value());
+			sensorData.sensorAddress = sensorsNode->first_attribute("address")->value();
 			sensorData.enabled = static_cast<bool>(stoi(sensorsNode->first_attribute("scanningPeriod")->value()));
 			sensorData.enableThresholdValue = stoi(sensorsNode->first_attribute("threshold")->value());
 			sensorData.status = STATUS_OK;

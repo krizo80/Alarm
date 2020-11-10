@@ -10,6 +10,7 @@
 #include "DevicesConfiguration.h"
 #include "SensorEventsDatabase.h"
 #include "ReadingConverter.h"
+#include <chrono>
 
 using namespace std;
 
@@ -27,7 +28,7 @@ xmlResponse DeviceInfoRegister::getConfigurationDeviceInfo(int deviceId)
 
 	result[deviceId].insert((pair<string, string>("sensorName", config.sensorName)));
 	result[deviceId].insert((pair<string, string>("enable", to_string(static_cast<int>(config.enabled)))));
-	result[deviceId].insert((pair<string, string>("address", to_string(config.sensorAddress))));
+	result[deviceId].insert((pair<string, string>("address", config.sensorAddress)));
 	result[deviceId].insert((pair<string, string>("sensorType", to_string(config.sensorType))));
 	result[deviceId].insert((pair<string, string>("scanningPeriod", to_string(config.scanningPeriod))));
 	result[deviceId].insert((pair<string, string>("status", to_string(config.status))));
@@ -39,10 +40,14 @@ xmlResponse DeviceInfoRegister::getReadingDeviceInfo(int deviceId)
 {
 	xmlResponse result;
 	ReadingConverter converter;
+	chrono::time_point<chrono::system_clock> timestamp = any_cast<DatabaseReadingEntry>(deviceInfoSource[1]->getData(deviceId)).readingTimestamp;
+
 	SensorReading reading = any_cast<DatabaseReadingEntry>(deviceInfoSource[1]->getData(deviceId)).reading;
 
 	result[deviceId].insert((pair<string, string>("value", converter.ConvertReadingToString(reading))));
 	result[deviceId].insert((pair<string, string>("status", converter.ConvertStatusToString(reading))));
+
+	result[deviceId].insert( (pair<string, string>("time", to_string(std::chrono::system_clock::to_time_t(timestamp)) )) );
 
 	return result;
 }
@@ -62,6 +67,7 @@ xmlResponse DeviceInfoRegister::getPresenceDeviceInfo()
 		{
 			sensorParam = any_cast<SensorParameters>(deviceInfoSource[0]->getData(sensorIdx));
 			result[sensorIdx].insert(pair<string, string>("sensorName", sensorParam.sensorName));
+			result[sensorIdx].insert(pair<string, string>("SensorId", to_string(sensorIdx)));
 		}
 		sensorIdx++;
 	}
@@ -93,6 +99,7 @@ xmlResponse DeviceInfoRegister::getTemperatureDeviceInfo()
 			elements.insert(pair<string, string>("Temperature", converter.ConvertReadingToString(readingEntry.reading)));
 			result[sensorIdx] = elements;
 */
+			result[sensorIdx].insert(pair<string, string>("SensorId", to_string(sensorIdx)));
 			result[sensorIdx].insert(pair<string, string>("Temperature", converter.ConvertReadingToString(readingEntry.reading)));
 			result[sensorIdx].insert(pair<string, string>("sensorName", sensorParam.sensorName));
 

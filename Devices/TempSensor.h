@@ -17,12 +17,14 @@ using namespace std;
 class TempSensor : public DeviceInterface
 {
 	private:
-		const int deviceAddress;
+		const string deviceAddress;
 		const ReadingType readingType;
+		const string devices_directory = "/sys/bus/w1/devices/";
+		const string reading_file = "/w1_slave";
 
 
     public:
-		TempSensor(int address) : deviceAddress(address), readingType(READING_FIXED_INT) {}
+		TempSensor(string address) : deviceAddress(address), readingType(READING_FIXED_INT) {}
 		SensorReading getDeviceReading() override;
 
 		virtual ~TempSensor() {}

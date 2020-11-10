@@ -27,6 +27,7 @@ typedef enum Status
     STATUS_XML_NO_MORE_SETTINGS,
     STATUS_AUTH_ERR,
     STATUS_GENERIC_ERR,
+	STATUS_WRONG_READING,
     STATUS_MAX
 } Status;
 
@@ -61,7 +62,7 @@ typedef struct SensorParameters
     string sensorName;
     int scanningPeriod;
     SensorType sensorType;
-    int sensorAddress;
+    string sensorAddress;
     int enableThresholdValue;
     bool enabled;
     Status status;

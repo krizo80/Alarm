@@ -84,6 +84,11 @@ Status SensorEventsDatabase::setData(const int deviceId, DeviceInfoData data)
 				lastDeviceIdx = deviceId;
 			}
 		}
+		else
+		{
+			lastSensorsEvents[deviceId].readingTimestamp = timeStamp;
+			lastSensorsEvents[deviceId].reading = any_cast<SensorReading>(data);
+		}
 	}
 	catch(bad_any_cast &e)
 	{

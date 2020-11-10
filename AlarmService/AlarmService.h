@@ -18,6 +18,7 @@
 #include "AlarmTriggerInterface.h"
 #include "CallbackCaller.h"
 #include "CallbackInterface.h"
+#include "ReadingConverter.h"
 
 using namespace std;
 

@@ -11,7 +11,7 @@ class DevicesRegister
 	private:
 		map<int, shared_ptr<DeviceInterface>> deviceRegister;
 		static constexpr int deviceTypes = SENSOR_MAX;
-		static array<function<shared_ptr<DeviceInterface>(int)>, deviceTypes> deviceType;
+		static array<function<shared_ptr<DeviceInterface>(string)>, deviceTypes> deviceType;
 
 	public:
 		DevicesRegister();

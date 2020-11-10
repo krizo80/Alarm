@@ -241,6 +241,7 @@ string RestApiService::getAlerts(map<string,string> parameters)
 		{
 			xmlResponse[sensorIdx].insert(pair<string, string>("sensorName",reading.sensorName));
 			xmlResponse[sensorIdx].insert(pair<string, string>("alert",to_string(reading.isActivate)));
+			xmlResponse[sensorIdx].insert(pair<string, string>("SensorId", to_string(sensorIdx)));
 		}
 		sensorIdx++;
 	}

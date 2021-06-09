@@ -10,6 +10,7 @@
 #include "AlarmSensor.h"
 
 
+
 SensorReading AlarmSensor::getDeviceReading()
 {
 	SensorReading reading;

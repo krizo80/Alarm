@@ -25,6 +25,7 @@ class AlarmSensor : public DeviceInterface, public AlarmTriggerInterface
 
     public:
 		AlarmSensor(string address) : deviceAddress(address), readingType(READING_STATE) {}
+
 		virtual ~AlarmSensor() {}
 
 		SensorReading getDeviceReading() override;

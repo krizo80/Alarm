@@ -8,16 +8,27 @@
 #include "MoveSensor.h"
 
 
+
+MoveSensor::MoveSensor(string address)
+{
+    deviceAddress = stoi(address);
+    readingType = READING_STATE;
+
+    wiringPiSetup();
+    pinMode(deviceAddress, INPUT);
+    pullUpDnControl (deviceAddress, PUD_UP);
+}
+
 SensorReading MoveSensor::getDeviceReading()
 {
 	SensorReading reading;
 
 
 	reading.readingType = this->readingType;
-	reading.lastReadingValue = 3;
+	reading.lastReadingValue = digitalRead(deviceAddress);
 	reading.status = STATUS_OK;
 
-	cout << "MOVE SENSOR with address = " << deviceAddress << endl;
+	cout << "MOVE SENSOR with address = " << deviceAddress << " Value = " << reading.lastReadingValue << endl;
 	return reading;
 }
 

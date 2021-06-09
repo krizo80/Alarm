@@ -36,6 +36,7 @@ class ReadingConverter
 		{}
 
 		string ConvertReadingToString(SensorReading reading);
+		string ConvertReadingToString(bool reading);
 		string ConvertStatusToString(SensorReading rading);
 		bool   ConvertReadingToAlarm(SensorReading reading, int thresholdValue);
 

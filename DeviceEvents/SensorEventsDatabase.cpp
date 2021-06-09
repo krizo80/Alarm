@@ -64,10 +64,10 @@ Status SensorEventsDatabase::setData(const int deviceId, DeviceInfoData data)
 			{
 				if (false == lastSensorsEvents[deviceId].isValidExecedTimeStamp)
 				{
-					lastSensorsEvents[deviceId].lastExecedThrReadingTimestamp = timeStamp;
 					lastSensorsEvents[deviceId].isValidExecedTimeStamp = true;
 				}
 				lastSensorsEvents[deviceId].isSensorGeneratingAlarm = true;
+				lastSensorsEvents[deviceId].lastExecedThrReadingTimestamp = timeStamp;
 			}
 			else if ((true == lastSensorsEvents[deviceId].isValidExecedTimeStamp) &&
 					(duration_msec.count() > timeOfPresenceSec))

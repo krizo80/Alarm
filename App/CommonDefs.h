@@ -28,6 +28,7 @@ typedef enum Status
     STATUS_AUTH_ERR,
     STATUS_GENERIC_ERR,
 	STATUS_WRONG_READING,
+	STATUS_READING_NOT_READY,
     STATUS_MAX
 } Status;
 
@@ -44,6 +45,7 @@ typedef enum SensorType
 {
     MOVE_SENSOR,
     TEMP_SENSOR,
+    ENERGY_SENSOR,
     CO2_SENSOR,
     CAMERA_SENSOR,
     ALARM_SENSOR,
@@ -78,7 +80,7 @@ typedef struct SensorReading
 
 typedef struct AlarmReading
 {
-	string sensorName;
+    string sensorName;
     bool isActivate;
     Status status;
 } AlarmReading;

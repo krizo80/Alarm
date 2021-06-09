@@ -63,11 +63,13 @@ xmlResponse DeviceInfoRegister::getPresenceDeviceInfo()
 	do
 	{
 		readingEntry = any_cast<DatabaseReadingEntry>(deviceInfoSource[1]->getData(sensorIdx));
-		if((STATUS_OK == readingEntry.reading.status) && ( true == readingEntry.isSensorGeneratingAlarm))
+		sensorParam = any_cast<SensorParameters>(deviceInfoSource[0]->getData(sensorIdx));
+
+		if((STATUS_OK == readingEntry.reading.status) && (sensorParam.sensorType == MOVE_SENSOR))
 		{
-			sensorParam = any_cast<SensorParameters>(deviceInfoSource[0]->getData(sensorIdx));
-			result[sensorIdx].insert(pair<string, string>("sensorName", sensorParam.sensorName));
-			result[sensorIdx].insert(pair<string, string>("SensorId", to_string(sensorIdx)));
+		    result[sensorIdx].insert(pair<string, string>("sensorName", sensorParam.sensorName));
+		    result[sensorIdx].insert(pair<string, string>("sensorId", to_string(sensorIdx)));
+		    result[sensorIdx].insert(pair<string, string>("presenceState", to_string(readingEntry.isSensorGeneratingAlarm)));
 		}
 		sensorIdx++;
 	}
@@ -91,7 +93,7 @@ xmlResponse DeviceInfoRegister::getTemperatureDeviceInfo()
 		readingEntry = any_cast<DatabaseReadingEntry>(deviceInfoSource[1]->getData(sensorIdx));
 		sensorParam = any_cast<SensorParameters>(deviceInfoSource[0]->getData(sensorIdx));
 
-		if((STATUS_OK == readingEntry.reading.status) && ( TEMP_SENSOR == sensorParam.sensorType))
+		if(TEMP_SENSOR == sensorParam.sensorType)
 		{/*
 			map<string,string> elements;
 			elements.clear();
@@ -99,13 +101,44 @@ xmlResponse DeviceInfoRegister::getTemperatureDeviceInfo()
 			elements.insert(pair<string, string>("Temperature", converter.ConvertReadingToString(readingEntry.reading)));
 			result[sensorIdx] = elements;
 */
-			result[sensorIdx].insert(pair<string, string>("SensorId", to_string(sensorIdx)));
-			result[sensorIdx].insert(pair<string, string>("Temperature", converter.ConvertReadingToString(readingEntry.reading)));
+			result[sensorIdx].insert(pair<string, string>("sensorId", to_string(sensorIdx)));
+			result[sensorIdx].insert(pair<string, string>("temperature", converter.ConvertReadingToString(readingEntry.reading)));
+			result[sensorIdx].insert(pair<string, string>("thresholdExceeded", converter.ConvertReadingToString(readingEntry.isSensorGeneratingAlarm)));
 			result[sensorIdx].insert(pair<string, string>("sensorName", sensorParam.sensorName));
+			result[sensorIdx].insert(pair<string, string>("status", converter.ConvertStatusToString(readingEntry.reading)));
 
 
 //			result["sensorId_" + to_string(sensorIdx) + "_Name"] = sensorParam.sensorName;
 //			result["sensorId_" + to_string(sensorIdx) + "_Temp"] = converter.ConvertReadingToString(readingEntry.reading);
+		}
+		sensorIdx++;
+	}
+	while (readingEntry.reading.status != STATUS_XML_NO_MORE_SENSORS);
+
+
+	return result;
+}
+
+xmlResponse DeviceInfoRegister::getEnergyDeviceInfo()
+{
+	xmlResponse result;
+	ReadingConverter converter;
+	int sensorIdx = 0;
+	DatabaseReadingEntry readingEntry;
+	SensorParameters sensorParam;
+
+	do
+	{
+		readingEntry = any_cast<DatabaseReadingEntry>(deviceInfoSource[1]->getData(sensorIdx));
+		sensorParam = any_cast<SensorParameters>(deviceInfoSource[0]->getData(sensorIdx));
+
+		if(ENERGY_SENSOR == sensorParam.sensorType)
+		{
+			result[sensorIdx].insert(pair<string, string>("sensorId", to_string(sensorIdx)));
+			result[sensorIdx].insert(pair<string, string>("power", converter.ConvertReadingToString(readingEntry.reading)));
+			result[sensorIdx].insert(pair<string, string>("sensorName", sensorParam.sensorName));
+			result[sensorIdx].insert(pair<string, string>("type", sensorParam.sensorAddress));
+			result[sensorIdx].insert(pair<string, string>("status", converter.ConvertStatusToString(readingEntry.reading)));
 		}
 		sensorIdx++;
 	}

@@ -25,6 +25,15 @@ string ReadingConverter::ConvertReadingToString(SensorReading reading)
 	return result;
 }
 
+string ReadingConverter::ConvertReadingToString(bool reading)
+{
+	string result;
+	if (reading) result = "yes";
+	    else result = "no";
+
+	return result;
+}
+
 string ReadingConverter::ConvertStatusToString(SensorReading reading)
 {
 	string result;
@@ -35,7 +44,13 @@ string ReadingConverter::ConvertStatusToString(SensorReading reading)
 			result = "OK";
 			break;
 		case STATUS_SENSOR_NOT_EXIST:
-			result = "WRONG SENSOR_ID";
+			result = "WRONG_SENSOR_ID";
+			break;
+		case STATUS_READING_NOT_READY:
+			result = "READING_NOT_READY";
+			break;
+		case STATUS_WRONG_READING:
+			result = "READING_CRC_ERROR";
 			break;
 		default:
 			result = "GENERIC ERROR";

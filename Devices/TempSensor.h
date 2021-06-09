@@ -11,25 +11,39 @@
 #include <DeviceInterface.h>
 #include "CommonDefs.h"
 #include <iostream>
+#include <mutex>
+#include <thread>
+
 
 using namespace std;
+
 
 class TempSensor : public DeviceInterface
 {
 	private:
-		const string deviceAddress;
-		const ReadingType readingType;
-		const string devices_directory = "/sys/bus/w1/devices/";
-		const string reading_file = "/w1_slave";
-
+		string deviceAddress;
+		SensorReading reading;
 
     public:
-		TempSensor(string address) : deviceAddress(address), readingType(READING_FIXED_INT) {}
-		SensorReading getDeviceReading() override;
+		TempSensor(string address);
+		string getDeviceAddress() { return deviceAddress;}
+		void setNewReading(SensorReading reading);
 
+		SensorReading getDeviceReading() override;
 		virtual ~TempSensor() {}
 };
 
+
+class TempReadingThread
+{
+	private:
+		const string devices_directory = "/sys/bus/w1/devices/";
+		const string reading_file = "/w1_slave";
+		TempSensor *tempSensor;
+	public:
+		TempReadingThread(TempSensor *sensor) : tempSensor(sensor) {}
+		void operator()(int param);
+};
 
 
 #endif /* TEMPSENSOR_H_ */

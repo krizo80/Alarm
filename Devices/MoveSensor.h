@@ -10,6 +10,7 @@
 
 #include <DeviceInterface.h>
 #include "CommonDefs.h"
+#include <wiringPi.h>
 #include <iostream>
 
 using namespace std;
@@ -17,12 +18,12 @@ using namespace std;
 class MoveSensor : public DeviceInterface
 {
 	private:
-		const string deviceAddress;
-		const ReadingType readingType;
+		int deviceAddress;
+		ReadingType readingType;
 
 
-    public:
-		MoveSensor(string address) : deviceAddress(address), readingType(READING_STATE) {}
+	public:
+		MoveSensor(string address);
 		virtual ~MoveSensor() {}
 		SensorReading getDeviceReading() override;
 };

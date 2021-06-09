@@ -4,8 +4,13 @@ project(AlarmApp)
 
 set(CMAKE_CXX_STANDARD 17)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
+SET(GCC_WIRING_LINK_FLAGS "-lwiringPi")
+SET(GCC_CURL_LINK_FLAGS "-lcurl")
 find_package(Threads REQUIRED)
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+
+
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_WIRING_LINK_FLAGS} ${GCC_CURL_LINK_FLAGS}")
 
 include_directories(App)
 include_directories(Devices)

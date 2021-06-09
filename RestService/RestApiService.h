@@ -31,6 +31,7 @@ class RestApiService: public Pistache::Http::Handler
 		static string getPresence(map<string,string> parameters);
 		static string getTemperature(map<string,string> parameters);
 		static string getAlerts(map<string,string> parameters);
+		static string getEnergy(map<string,string> parameters);
 
 		static string generateSingleElementResponse(xmlResponse responseElements);
 		static string generateResponse(xmlResponse responseElements);

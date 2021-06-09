@@ -29,6 +29,8 @@ class DeviceInfoRegister
 
 		xmlResponse getPresenceDeviceInfo();
 		xmlResponse getTemperatureDeviceInfo();
+		xmlResponse getEnergyDeviceInfo();
+
 };
 
 

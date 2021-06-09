@@ -164,6 +164,7 @@ string RestApiService::getReading(map<string,string> parameters)
 	return response;
 }
 
+
 string RestApiService::getPresence(map<string,string> parameters)
 {
 	string response;
@@ -252,6 +253,16 @@ string RestApiService::getAlerts(map<string,string> parameters)
 	return response;
 }
 
+
+string RestApiService::getEnergy(map<string,string> parameters)
+{
+	string response;
+
+	response = generateResponse(deviceRegister.getEnergyDeviceInfo());
+
+	return response;
+}
+
 map<string,function<string(map<string,string>)>> RestApiService::apiCommands =
 {
 		{"GetVersion", getVersion},
@@ -263,6 +274,7 @@ map<string,function<string(map<string,string>)>> RestApiService::apiCommands =
 		//Below methods return data for all available sensors
 		{"GetTemperature" , getTemperature },
 		{"GetPresence" , getPresence },
+		{"GetEnergy" , getEnergy },
 		{"GetAlerts" , getAlerts }
 };
 

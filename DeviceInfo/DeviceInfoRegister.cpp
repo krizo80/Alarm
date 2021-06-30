@@ -25,11 +25,30 @@ xmlResponse DeviceInfoRegister::changeSensorReadingValue(string sensorName, cons
 {
 	xmlResponse result;
 	int deviceId = 0;
+	SensorParameters config;
+
 	//find sensorId for provided sensorName
-	//SensorParameters config = any_cast<SensorParameters>(deviceInfoSource[0]->getData(deviceId));
-	dynamic_pointer_cast<DeviceSetupInterface>(deviceInfoSource[1])->setupNewReadingValue(deviceId, reading);
-	result[deviceId].insert((pair<string, string>("sensorName", sensorName)));
-	result[deviceId].insert((pair<string, string>("status", "OK")));
+	while (config.status != STATUS_SENSOR_NOT_EXIST)
+	{
+		config = any_cast<SensorParameters>(deviceInfoSource[0]->getData(deviceId));
+		if (config.sensorName.compare(sensorName) == 0)
+		{
+			break;
+		}
+		deviceId++;
+	}
+
+	if (config.status != STATUS_SENSOR_NOT_EXIST)
+	{
+		dynamic_pointer_cast<DeviceSetupInterface>(deviceInfoSource[1])->setupNewReadingValue(deviceId, reading);
+		result[deviceId].insert((pair<string, string>("sensorName", sensorName)));
+		result[deviceId].insert((pair<string, string>("status", "OK")));
+	}
+	else
+	{
+		result[deviceId].insert((pair<string, string>("sensorName", sensorName)));
+		result[deviceId].insert((pair<string, string>("status", "ERROR")));
+	}
 
 	return result;
 }

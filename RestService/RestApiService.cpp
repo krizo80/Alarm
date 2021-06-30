@@ -178,7 +178,7 @@ string RestApiService::changeStateSensor(map<string,string> parameters)
 	}
 	catch (invalid_argument& e)
 	{
-		response = generateErrorResponse("status", "Invalid parameter");
+		response = generateErrorResponse(sensorName, "Invalid parameter");
 	}
 
 	return response;

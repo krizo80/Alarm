@@ -26,10 +26,13 @@ class DeviceInfoRegister
 		DeviceInfoRegister();
 		xmlResponse getConfigurationDeviceInfo(int deviceId);
 		xmlResponse getReadingDeviceInfo(int deviceId);
+		xmlResponse changeSensorReadingValue(string sensorName, const int reading);
 
 		xmlResponse getPresenceDeviceInfo();
 		xmlResponse getTemperatureDeviceInfo();
 		xmlResponse getEnergyDeviceInfo();
+		xmlResponse getStateDeviceInfo();
+
 
 };
 

@@ -18,6 +18,7 @@ class DeviceInterface
 
     public:
         virtual SensorReading getDeviceReading() = 0;
+        virtual void updateDeviceReading(int reading) {}
 };
 
 

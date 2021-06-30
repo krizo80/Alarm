@@ -28,7 +28,7 @@ SensorReading MoveSensor::getDeviceReading()
 	reading.lastReadingValue = digitalRead(deviceAddress);
 	reading.status = STATUS_OK;
 
-	cout << "MOVE SENSOR with address = " << deviceAddress << " Value = " << reading.lastReadingValue << endl;
+	//cout << "MOVE SENSOR with address = " << deviceAddress << " Value = " << reading.lastReadingValue << endl;
 	return reading;
 }
 

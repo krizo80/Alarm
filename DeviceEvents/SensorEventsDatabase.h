@@ -32,6 +32,8 @@ class SensorEventsDatabase : public DeviceSetupInterface
 		Status setData(const int deviceId, DeviceInfoData data) override;
 
 		void prepareDeviceInfoSetup(const int deviceId, const shared_ptr<DeviceInterface> device) override;
+		void setupNewReadingValue(const int deviceId, const int reading) override;
+		void clearNewReadingValue(const int deviceId) override;
 
 		static shared_ptr<SensorEventsDatabase> getInstance();
 		virtual ~SensorEventsDatabase() {}

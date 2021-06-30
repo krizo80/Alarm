@@ -18,6 +18,8 @@ DeviceInfoData SensorEventsDatabase::getData(const int deviceId)
 {
 	DatabaseReadingEntry readingEntry = {};
 
+	synch.lock();
+
 	if (lastSensorsEvents.find(deviceId) == lastSensorsEvents.end())
 	{
 		if (deviceId > lastDeviceIdx)
@@ -34,6 +36,8 @@ DeviceInfoData SensorEventsDatabase::getData(const int deviceId)
 		readingEntry = lastSensorsEvents[deviceId];
 	}
 
+	synch.unlock();
+
 	return readingEntry;
 }
 
@@ -41,10 +45,34 @@ void SensorEventsDatabase::prepareDeviceInfoSetup(const int deviceId, const shar
 {
 	DatabaseReadingEntry data;
 
+	synch.lock();
+
 	//initialize sensors reading data
 	data.reading = device->getDeviceReading();
 	data.isSensorGeneratingAlarm = false;
+	data.setupDeviceWithNewReadingValue = false;
 	lastSensorsEvents[deviceId] = data;
+
+	synch.unlock();
+}
+
+void SensorEventsDatabase::setupNewReadingValue(const int deviceId, const int reading)
+{
+	synch.lock();
+
+	lastSensorsEvents[deviceId].setupDeviceWithNewReadingValue = true;
+	lastSensorsEvents[deviceId].newReadingValue = reading;
+
+	synch.unlock();
+}
+
+void SensorEventsDatabase::clearNewReadingValue(const int deviceId)
+{
+	synch.lock();
+
+	lastSensorsEvents[deviceId].setupDeviceWithNewReadingValue = false;
+
+	synch.unlock();
 }
 
 Status SensorEventsDatabase::setData(const int deviceId, DeviceInfoData data)
@@ -54,6 +82,8 @@ Status SensorEventsDatabase::setData(const int deviceId, DeviceInfoData data)
 	auto timeStamp = chrono::high_resolution_clock::now();
     //todo: deviceId is not checked against overflow
 	auto duration_msec = chrono::duration_cast<chrono::milliseconds>(timeStamp  - lastSensorsEvents[deviceId].lastExecedThrReadingTimestamp);
+
+	synch.lock();
 
 	try
 	{
@@ -95,6 +125,7 @@ Status SensorEventsDatabase::setData(const int deviceId, DeviceInfoData data)
 		status = STATUS_READING_EXCEPTION;
 	}
 
+	synch.unlock();
 	return status;
 }
 

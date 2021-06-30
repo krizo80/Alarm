@@ -32,6 +32,9 @@ class RestApiService: public Pistache::Http::Handler
 		static string getTemperature(map<string,string> parameters);
 		static string getAlerts(map<string,string> parameters);
 		static string getEnergy(map<string,string> parameters);
+		static string getStates(map<string,string> parameters);
+		static string changeStateSensor(map<string,string> parameters);
+
 
 		static string generateSingleElementResponse(xmlResponse responseElements);
 		static string generateResponse(xmlResponse responseElements);
@@ -40,6 +43,7 @@ class RestApiService: public Pistache::Http::Handler
 		string getCommand(const string inputQuery);
 		map<string,string> getParameters(const string inputQuery);
 	public:
+
     	HTTP_PROTOTYPE(RestApiService)
 
 		void onRequest(const Pistache::Http::Request& request, Pistache::Http::ResponseWriter response);

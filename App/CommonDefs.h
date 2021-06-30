@@ -46,8 +46,7 @@ typedef enum SensorType
     MOVE_SENSOR,
     TEMP_SENSOR,
     ENERGY_SENSOR,
-    CO2_SENSOR,
-    CAMERA_SENSOR,
+    STATE_SENSOR,
     ALARM_SENSOR,
     SENSOR_MAX
 } SensorType;
@@ -92,6 +91,8 @@ typedef struct DatabaseReadingEntry
 	chrono::time_point<chrono::system_clock> readingTimestamp;
 	bool isSensorGeneratingAlarm;
 	bool isValidExecedTimeStamp;
+    int newReadingValue;
+    bool setupDeviceWithNewReadingValue;
 } DatabaseReadingEntry;
 
 

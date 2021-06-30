@@ -16,6 +16,8 @@ class DeviceSetupInterface :  public DeviceInfoInterface
 {
 	public:
 		virtual void prepareDeviceInfoSetup(const int deviceId, const shared_ptr<DeviceInterface> device) = 0;
+		virtual void setupNewReadingValue(const int deviceId, const int reading) {}
+		virtual void clearNewReadingValue(const int deviceId) {}
 };
 
 

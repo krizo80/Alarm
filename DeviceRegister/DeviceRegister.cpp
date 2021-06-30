@@ -9,6 +9,7 @@
 #include "TempSensor.h"
 #include "AlarmSensor.h"
 #include "EnergySensor.h"
+#include "StateSensor.h"
 #include "DevicesConfiguration.h"
 
 DevicesRegister::DevicesRegister()
@@ -67,6 +68,6 @@ array<function<shared_ptr<DeviceInterface>(string)>, DevicesRegister::deviceType
 		[](string address)->shared_ptr<DeviceInterface> { return make_shared<MoveSensor>(address); },
 		[](string address)->shared_ptr<DeviceInterface> { return make_shared<TempSensor>(address); },
 		[](string address)->shared_ptr<DeviceInterface> { return make_shared<EnergySensor>(address); },
-		[](string address)->shared_ptr<DeviceInterface> { return make_shared<MoveSensor>(address); },
+		[](string address)->shared_ptr<DeviceInterface> { return make_shared<StateSensor>(address); },
 		[](string address)->shared_ptr<DeviceInterface> { return make_shared<AlarmSensor>(address); }
 };

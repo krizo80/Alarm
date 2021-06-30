@@ -2,7 +2,7 @@
  * DeviceInfoRegister.cpp
  *
  *  Created on: 14 lis 2019
- *      Author: dom
+ *      Author: krichert
  */
 
 
@@ -19,6 +19,19 @@ DeviceInfoRegister::DeviceInfoRegister()
 	deviceInfoSource.push_back(DevicesConfiguration::getInstance());
 	//todo: provide deconstructor
 	deviceInfoSource.push_back(SensorEventsDatabase::getInstance());
+}
+
+xmlResponse DeviceInfoRegister::changeSensorReadingValue(string sensorName, const int reading)
+{
+	xmlResponse result;
+	int deviceId = 0;
+	//find sensorId for provided sensorName
+	//SensorParameters config = any_cast<SensorParameters>(deviceInfoSource[0]->getData(deviceId));
+	dynamic_pointer_cast<DeviceSetupInterface>(deviceInfoSource[1])->setupNewReadingValue(deviceId, reading);
+	result[deviceId].insert((pair<string, string>("sensorName", sensorName)));
+	result[deviceId].insert((pair<string, string>("status", "OK")));
+
+	return result;
 }
 
 xmlResponse DeviceInfoRegister::getConfigurationDeviceInfo(int deviceId)
@@ -139,6 +152,34 @@ xmlResponse DeviceInfoRegister::getEnergyDeviceInfo()
 			result[sensorIdx].insert(pair<string, string>("sensorName", sensorParam.sensorName));
 			result[sensorIdx].insert(pair<string, string>("type", sensorParam.sensorAddress));
 			result[sensorIdx].insert(pair<string, string>("status", converter.ConvertStatusToString(readingEntry.reading)));
+		}
+		sensorIdx++;
+	}
+	while (readingEntry.reading.status != STATUS_XML_NO_MORE_SENSORS);
+
+
+	return result;
+}
+
+xmlResponse DeviceInfoRegister::getStateDeviceInfo()
+{
+	xmlResponse result;
+	ReadingConverter converter;
+	int sensorIdx = 0;
+	DatabaseReadingEntry readingEntry;
+	SensorParameters sensorParam;
+
+	do
+	{
+		readingEntry = any_cast<DatabaseReadingEntry>(deviceInfoSource[1]->getData(sensorIdx));
+		sensorParam = any_cast<SensorParameters>(deviceInfoSource[0]->getData(sensorIdx));
+
+		if(sensorParam.sensorType == STATE_SENSOR)
+		{
+		    result[sensorIdx].insert(pair<string, string>("sensorName", sensorParam.sensorName));
+		    result[sensorIdx].insert(pair<string, string>("sensorId", to_string(sensorIdx)));
+		    result[sensorIdx].insert(pair<string, string>("outputState", to_string(readingEntry.reading.lastReadingValue)));
+		    result[sensorIdx].insert(pair<string, string>("status", converter.ConvertStatusToString(readingEntry.reading)));
 		}
 		sensorIdx++;
 	}

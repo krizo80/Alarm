@@ -2,7 +2,7 @@
  * Initializer.cpp
  *
  *  Created on: 1 paź 2019
- *      Author: dom
+ *      Author: krichert
  */
 #include "Initializer.h"
 #include "MoveSensor.h"

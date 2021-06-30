@@ -46,6 +46,15 @@ int  Scheduler::schedulerThreadFunction()
 
 			if (0 == (tenthOfmilisec % scanningPeriod))
 			{
+				reading = readingSources[0]->getData(deviceId);
+
+				if (any_cast<DatabaseReadingEntry>(reading).setupDeviceWithNewReadingValue)
+				{
+					devRegister.getRegisteredDevice(deviceId)->updateDeviceReading(any_cast<DatabaseReadingEntry>(reading).newReadingValue);
+					readingSources[0]->clearNewReadingValue(deviceId);
+				}
+
+				//devRegister.getRegisteredDevice(deviceId)->updateDeviceReading(reading.);
 				///todo:handle the status (may return value different then success)
 				//feed all connected sources
 				reading = devRegister.getRegisteredDevice(deviceId)->getDeviceReading();

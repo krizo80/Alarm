@@ -164,6 +164,26 @@ string RestApiService::getReading(map<string,string> parameters)
 	return response;
 }
 
+string RestApiService::changeStateSensor(map<string,string> parameters)
+{
+	string sensorName;
+	string response;
+	int reading = 0;
+
+	try
+	{
+		sensorName = parameters["sensorName"];
+		reading = stoi(parameters["reading"]);
+		response = generateSingleElementResponse(deviceRegister.changeSensorReadingValue(sensorName, reading));
+	}
+	catch (invalid_argument& e)
+	{
+		response = generateErrorResponse("status", "Invalid parameter");
+	}
+
+	return response;
+}
+
 
 string RestApiService::getPresence(map<string,string> parameters)
 {
@@ -263,18 +283,29 @@ string RestApiService::getEnergy(map<string,string> parameters)
 	return response;
 }
 
+string RestApiService::getStates(map<string,string> parameters)
+{
+	string response;
+
+	response = generateResponse(deviceRegister.getStateDeviceInfo());
+
+	return response;
+}
+
 map<string,function<string(map<string,string>)>> RestApiService::apiCommands =
 {
-		{"GetVersion", getVersion},
+		{"GetVersion", getVersion},                //command=GetVersion
 		{"GetReading", getReading},
 		{"GetConfig" , getConfig },
 		{"EnableAlarm" , enableAlarm },
 		{"DisableAlarm" , disableAlarm },
+		{"ChangeStateSensor" , changeStateSensor }, //command=ChangeStateSensor&sensorName=Zraszacze1&reading=0
 
 		//Below methods return data for all available sensors
-		{"GetTemperature" , getTemperature },
+		{"GetTemperature" , getTemperature },       //command=GetTemperature
 		{"GetPresence" , getPresence },
-		{"GetEnergy" , getEnergy },
+		{"GetEnergy" , getEnergy },                 //command=GetEnergy
+		{"GetStates" , getStates },                 //command=GetStates
 		{"GetAlerts" , getAlerts }
 };
 

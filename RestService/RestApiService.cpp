@@ -136,7 +136,7 @@ string RestApiService::generateErrorResponse(string sensorId, string message)
 	string response;
 
 	//prepare response
-	response = "<sensosId>" + sensorId + "</sensorId>";
+	response = "<sensor>" + sensorId + "</sensor>";
 	response += "<error>" +message + "</error>";
 	return response;
 }
@@ -164,7 +164,7 @@ string RestApiService::getReading(map<string,string> parameters)
 	return response;
 }
 
-string RestApiService::changeStateSensor(map<string,string> parameters)
+string RestApiService::updateSensorState(map<string,string> parameters)
 {
 	string sensorName;
 	string response;
@@ -299,7 +299,7 @@ map<string,function<string(map<string,string>)>> RestApiService::apiCommands =
 		{"GetConfig" , getConfig },
 		{"EnableAlarm" , enableAlarm },
 		{"DisableAlarm" , disableAlarm },
-		{"ChangeStateSensor" , changeStateSensor }, //command=ChangeStateSensor&sensorName=Zraszacze1&reading=0
+		{"UpdateSensorState" , updateSensorState }, //command=UpdateSensorState&sensorName=Zraszacze1&reading=0
 
 		//Below methods return data for all available sensors
 		{"GetTemperature" , getTemperature },       //command=GetTemperature

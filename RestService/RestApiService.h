@@ -33,7 +33,7 @@ class RestApiService: public Pistache::Http::Handler
 		static string getAlerts(map<string,string> parameters);
 		static string getEnergy(map<string,string> parameters);
 		static string getStates(map<string,string> parameters);
-		static string changeStateSensor(map<string,string> parameters);
+		static string updateSensorState(map<string,string> parameters);
 
 
 		static string generateSingleElementResponse(xmlResponse responseElements);
